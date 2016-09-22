@@ -1,6 +1,7 @@
 
 // export all commands. Ideally the commands would be in a separate package, but for now they are bundled with the CLI.
 
+export * from './api';
 export * from './library';
 export * from './library_delete';
 export * from './library_init';

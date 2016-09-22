@@ -1,8 +1,14 @@
 
+import path from 'path';
 import ProjectProperties from './project_properties';
 import pipeline from 'when/pipeline';
 import {convertApiError} from './api';
 import {CommandSite} from './command';
+import {resourcesDir} from 'particle-cli-library-manager';
+
+export function libraryTestResources() {
+	return path.join(resourcesDir(), 'libraries');
+}
 
 
 export class LibraryAddCommandSite extends CommandSite {
