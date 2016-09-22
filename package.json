@@ -77,6 +77,8 @@
     "lint": "eslint -f unix src/**/*.js",
     "test": "mocha test test/cmd test/integration --compilers js:babel-register",
     "compile": "babel src -d dist",
-    "prepublish": "npm run compile"
+    "prepublish": "npm run compile",
+    "preversion": "npm run lint && npm run test && npm run prepublish",
+    "version": "VERSION=`node -p -e \"require('./package.json').version\"` bash -c 'read -p \"Update CHANGELOG.md for version $VERSION and press ENTER when done.\"' && git add CHANGELOG.md"
   }
 }

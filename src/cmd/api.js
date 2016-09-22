@@ -18,4 +18,5 @@ function convertApiError(err) {
 
 export {
 	convertApiError
-}
+};
+
