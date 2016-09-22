@@ -59,7 +59,6 @@ export class LibraryAddCommand {
 	}
 
 	ensureProjectExists() {
-		console.log('ensire exists');
 		return this.projectExist().then(exists => {
 			if (!exists) {
 				return this.createProject();
@@ -81,8 +80,6 @@ export class LibraryAddCommand {
 	}
 
 	fetchLibrary(name, version) {
-		console.log('fetch library');
-
 		return Promise.resolve(this.site.apiClient())
 		.then((apiClient) => {
 			return Promise.resolve(this.site.fetchingLibrary(apiClient.library(name, { version }), name, version));
@@ -97,7 +94,6 @@ export class LibraryAddCommand {
 	}
 
 	addLibraryToProject(library) {
-		console.log('add library ');
 		return pipeline([
 			() => this.site.addedLibrary(library.name, library.version),
 			() => this.projectProperties.addDependency(library.name, library.version)
@@ -105,8 +101,6 @@ export class LibraryAddCommand {
 	}
 
 	saveProject() {
-		console.log('save project');
-
 		return this.projectProperties.save();
 	}
 }
