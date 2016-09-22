@@ -1,5 +1,5 @@
 import {Command, CommandSite} from './command';
-import {buildLibraryInitGeneratorClass} from 'particle-cli-library-manager';
+import {buildLibraryInitGeneratorClass} from 'particle-library-manager';
 
 const promisify = require('es6-promisify');
 
