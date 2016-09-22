@@ -15,7 +15,7 @@
   "dependencies": {
     "babel-runtime": "^6.9.2",
     "particle-api-js": "^6.0.6",
-    "particle-cli-library-manager": "0.0.4-develop.5",
+    "particle-cli-library-manager": "0.0.5",
     "semver": "^5.1.0",
     "when": "^3.7.2",
     "yeoman-environment": "^1.6.3",
