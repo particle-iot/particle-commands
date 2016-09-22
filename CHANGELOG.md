@@ -3,6 +3,11 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.1.4 - 2016-09-22
+### Changed
+- Use latest library manager
+- Remove debug log
+
 ## 0.1.1 - 2016-09-22
 ### Changed
 - Use .npmignore to include transpiled files in published package
