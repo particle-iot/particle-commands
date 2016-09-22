@@ -5,6 +5,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 0.1.4 - 2016-09-22
 ### Changed
+- `particle-cli-library-manager` renamed to `particle-library-manager`
+
+## 0.1.4 - 2016-09-22
+### Changed
 - Use latest library manager
 - Remove debug log
 
