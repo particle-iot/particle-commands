@@ -79,6 +79,7 @@
     "compile": "babel src -d dist",
     "prepublish": "npm run compile",
     "preversion": "npm run lint && npm run test && npm run prepublish",
-    "version": "VERSION=`node -p -e \"require('./package.json').version\"` bash -c 'read -p \"Update CHANGELOG.md for version $VERSION and press ENTER when done.\"' && git add CHANGELOG.md"
+    "version": "npm run update-changelog",
+    "update-changelog": "VERSION=`node -p -e \"require('./package.json').version\"` bash -c 'read -p \"Update CHANGELOG.md for version $VERSION and press ENTER when done.\"' && git add CHANGELOG.md"
   }
 }
