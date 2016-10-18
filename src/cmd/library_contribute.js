@@ -3,7 +3,7 @@ import {FileSystemLibraryRepository, FileSystemNamingStrategy} from 'particle-cl
 
 /**
  */
-export class LibraryPublishCommandSite extends CommandSite {
+export class LibraryContributeCommandSite extends CommandSite {
 
 	constructor() {
 		super();
@@ -37,33 +37,33 @@ export class LibraryPublishCommandSite extends CommandSite {
 	}
 
 	/**
-	 * Notification that library publishing is starting
-	 * @param {Promise} promise   The promise that will publish the library.
+	 * Notification that library contribution is starting
+	 * @param {Promise} promise   The promise that will contribute the library.
 	 * @param {Library} library   The loaded library
 	 */
-	publishingLibrary(promise, library) {
+	contributingLibrary(promise, library) {
 
 	}
 
 	/**
-	 * Notification that the library has been successfully published.
-	 * @param {Library} library the library that was published.
+	 * Notification that the library has been successfully contributed.
+	 * @param {Library} library the library that was contributed.
 	 */
-	publishComplete(library) {
+	contributeComplete(library) {
 
 	}
 
 }
 
 /**
- * Implements the library public command.
+ * Implements the library contribute command.
  */
-export class LibraryPublishCommand extends Command {
+export class LibraryContributeCommand extends Command {
 
 	/**
 	 * @param {object} state The current conversation state.
-	 * @param {LibraryPublishCommandSite} site external services.
-	 * @returns {Promise} To run the library publish command.
+	 * @param {LibraryContributeCommandSite} site external services.
+	 * @returns {Promise} To run the library contribute command.
 	 */
 	run(state, site) {
 		const events = (event, ...args) => {
@@ -73,17 +73,17 @@ export class LibraryPublishCommand extends Command {
 
 		const name = '';
 		let dryRun = false;
-		let publishDir;
+		let contributeDir;
 		return Promise.resolve(site.libraryDirectory())
 		.then(dir => {
-			publishDir = dir;
+			contributeDir = dir;
 			return site.dryRun();
 		})
 		.then(d => dryRun = d)
 		.then(() => site.apiClient())
 		.then(client => {
-			const repo = new FileSystemLibraryRepository(publishDir, FileSystemNamingStrategy.DIRECT);
-			return repo.publish(name, client, dryRun, events);
+			const repo = new FileSystemLibraryRepository(contributeDir, FileSystemNamingStrategy.DIRECT);
+			return repo.contribute(name, client, dryRun, events);
 		})
 		.catch(err => {
 			if (err.validate && site.validationError) {
