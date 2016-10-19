@@ -1,7 +1,7 @@
 {
   "name": "particle-commands",
   "description": "Library of UX-neutral commands that provide key functionality for developer tools",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Matthew McGowan",
   "bugs": {
     "url": "https://github.com/spark/particle-commands/issues"

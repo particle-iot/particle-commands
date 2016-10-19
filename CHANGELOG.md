@@ -4,6 +4,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 0.2.0 - 2016-10-19
+### Changed
+- use latest version of particle-library-manager for the `contribute` repo method
+
+## 0.2.0 - 2016-10-19
 ### Added
 - support for library contribute and library publish
 
