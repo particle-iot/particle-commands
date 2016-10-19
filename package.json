@@ -16,7 +16,7 @@
     "babel-runtime": "^6.9.2",
     "es6-promisify": "^4.1.0",
     "particle-api-js": "^6.1.0",
-    "particle-library-manager": "0.0.5",
+    "particle-library-manager": "^0.1.0",
     "semver": "^5.1.0",
     "when": "^3.7.2",
     "yeoman-environment": "^1.6.3",
