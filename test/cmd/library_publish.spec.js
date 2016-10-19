@@ -2,7 +2,7 @@
 import {expect, sinon} from '../test-setup';
 import {LibraryPublishCommand, LibraryPublishCommandSite} from '../../src/cmd/library_publish';
 
-describe('LibrarySearchCommand', () => {
+describe('LibraryPublishCommand', () => {
 	it('handles api errors', () => {
 		const sut = new LibraryPublishCommand();
 		const apiError = new Error();
@@ -16,7 +16,7 @@ describe('LibrarySearchCommand', () => {
 		const sut = new LibraryPublishCommand();
 		const ident = 'mylib';
 		const client = {
-			publish: sinon.stub().rejects(new Error('API error'))
+			publishLibrary: sinon.stub().rejects(new Error('API error'))
 		};
 		const site = {
 			apiClient: sinon.stub().returns(client),
@@ -49,7 +49,7 @@ describe('LibrarySearchCommand', () => {
 		const ident = 'mylib';
 		const library = {name:ident};
 		const client = {
-			publish: sinon.stub().resolves(library)
+			publishLibrary: sinon.stub().resolves(library)
 		};
 		const site = {
 			apiClient: sinon.stub().returns(client),
