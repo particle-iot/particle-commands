@@ -1,5 +1,5 @@
 import {Command, CommandSite} from './command';
-import {FileSystemLibraryRepository, FileSystemNamingStrategy} from 'particle-cli-library-manager';
+import {convertApiError} from './api';
 
 /**
  */
@@ -13,50 +13,37 @@ export class LibraryPublishCommandSite extends CommandSite {
 		throw new Error('apiClient not available');
 	}
 
-	dryRun() {
-		return false;
-	}
-
-	libraryDirectory() {
+	/**
+	 * Retrieves the co-ordinates of the library to publish.
+	 */
+	libraryIdent() {
 		throw Error('not implemented');
 	}
-
-	// validationError(err) - optional method
 
 	error(err) {
 		throw err;
 	}
 
 	/**
-	 * Notification that the library directory is being checked. The library is validated and then loaded.
-	 * @param {Promise} promise     The promise to validate the library
-	 * @param {string} directory    The directory that contains the library to validate
-	 */
-	validatingLibrary(promise, directory) {
-
-	}
-
-	/**
 	 * Notification that library publishing is starting
 	 * @param {Promise} promise   The promise that will publish the library.
-	 * @param {Library} library   The loaded library
+	 * @param {string} ident      The library identifier
 	 */
-	publishingLibrary(promise, library) {
+	publishingLibrary(promise, ident) {
 
 	}
 
 	/**
-	 * Notification that the library has been successfully published.
+	 * Notification that the library publishing has completed.
 	 * @param {Library} library the library that was published.
 	 */
-	publishComplete(library) {
+	publishLibraryComplete(library) {
 
 	}
-
 }
 
 /**
- * Implements the library public command.
+ * Implements the library contribute command.
  */
 export class LibraryPublishCommand extends Command {
 
@@ -66,32 +53,30 @@ export class LibraryPublishCommand extends Command {
 	 * @returns {Promise} To run the library publish command.
 	 */
 	run(state, site) {
-		const events = (event, ...args) => {
-			const fn = site[event].bind(site) || (() => {});
-			fn(...args);
-		};
+		let name;
+		return Promise.resolve(site.libraryIdent())
+			.then(ident => name = ident)
+			.then(() => site.apiClient())
+			.then((apiClient) => {
+				const promise = apiClient.publishLibrary(name)
+					.catch(err => {
+						throw this.apiError(err);
+					});
 
-		const name = '';
-		let dryRun = false;
-		let publishDir;
-		return Promise.resolve(site.libraryDirectory())
-		.then(dir => {
-			publishDir = dir;
-			return site.dryRun();
-		})
-		.then(d => dryRun = d)
-		.then(() => site.apiClient())
-		.then(client => {
-			const repo = new FileSystemLibraryRepository(publishDir, FileSystemNamingStrategy.DIRECT);
-			return repo.publish(name, client, dryRun, events);
-		})
-		.catch(err => {
-			if (err.validate && site.validationError) {
-				site.validationError(err);
-			} else {
-				site.error(err);
-			}
-		});
+				const publishPromise = site.publishingLibrary(promise, name) || promise;
+				return publishPromise
+					.then(library => {
+						site.publishLibraryComplete(library);
+						return library;
+					})
+					.catch(err => {
+						site.error(err);
+					});
+			});
+	}
+
+	apiError(err) {
+		return convertApiError(err);
 	}
 
 }

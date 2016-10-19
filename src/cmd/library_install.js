@@ -1,5 +1,5 @@
 import {Command, CommandSite} from './command';
-import {CloudLibraryRepository, FileSystemLibraryRepository, FileSystemNamingStrategy} from 'particle-cli-library-manager';
+import {CloudLibraryRepository, FileSystemLibraryRepository, FileSystemNamingStrategy} from 'particle-library-manager';
 import ProjectProperties, {extended} from './project_properties';
 import path from 'path';
 
