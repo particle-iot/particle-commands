@@ -4,7 +4,7 @@ import ProjectProperties from './project_properties';
 import pipeline from 'when/pipeline';
 import {convertApiError} from './api';
 import {CommandSite} from './command';
-import {resourcesDir} from 'particle-cli-library-manager';
+import {resourcesDir} from 'particle-library-manager';
 
 export function libraryTestResources() {
 	return path.join(resourcesDir(), 'libraries');

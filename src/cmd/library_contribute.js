@@ -1,5 +1,5 @@
 import {Command, CommandSite} from './command';
-import {FileSystemLibraryRepository, FileSystemNamingStrategy} from 'particle-cli-library-manager';
+import {FileSystemLibraryRepository, FileSystemNamingStrategy} from 'particle-library-manager';
 
 /**
  */

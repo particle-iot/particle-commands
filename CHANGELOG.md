@@ -3,6 +3,14 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.1.6 - 2016-09-23
+### Changed
+- added missing dependency es6-promisify
+
+## 0.1.5 - 2016-09-22
+### Changed
+- `particle-cli-library-manager` renamed to `particle-library-manager`
+
 ## 0.1.4 - 2016-09-22
 ### Changed
 - Use latest library manager
