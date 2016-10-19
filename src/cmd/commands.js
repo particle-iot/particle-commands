@@ -7,6 +7,7 @@ export * from './library_delete';
 export * from './library_init';
 export * from './library_install';
 export * from './library_migrate';
+export * from './library_contribute';
 export * from './library_publish';
 export * from './library_search';
 export * from './project_properties';
