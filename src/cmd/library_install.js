@@ -112,18 +112,18 @@ export class LibraryInstallCommand extends Command {
 	_installLib(site, cloudRepo, vendored, libName, libVersion, projectDir, project, context) {
 		context[libName] = libVersion || 'latest';
 
-		const libDir = project.libraryDirectory(vendored, libName);
 		return site.notifyCheckingLibrary(libName)
 			.then(() => {
 				// todo - this should use the correct version too
 				return cloudRepo.fetch(libName);
 			})
 			.then((lib) => {
+				const libDir = project.libraryDirectory(vendored, lib.metadata.name);
 				return site.notifyFetchingLibrary(lib.metadata, projectDir)
 					.then(() => lib.copyTo(libDir))
 					.then(() => {
 						if (site.isAdaptersRequired()) {
-							return buildAdapters(libDir, lib.name);
+							return buildAdapters(libDir, lib.metadata.name);
 						}
 					})
 					.then(() => site.notifyInstalledLibrary(lib.metadata, projectDir))
