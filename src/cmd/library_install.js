@@ -29,7 +29,6 @@ export class LibraryInstallCommandSite extends CommandSite {
 		return false;
 	}
 
-
 	libraryName() {
 		throw Error('not implemented');
 	}
@@ -115,8 +114,7 @@ export class LibraryInstallCommand extends Command {
 		const libDir = project.libraryDirectory(vendored, libName);
 		return site.notifyCheckingLibrary(libName)
 			.then(() => {
-				// todo - this should use the correct version too
-				return cloudRepo.fetch(libName);
+				return cloudRepo.fetch(libName, libVersion);
 			})
 			.then((lib) => {
 				return site.notifyFetchingLibrary(lib.metadata, projectDir)
