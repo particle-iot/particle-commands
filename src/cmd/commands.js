@@ -10,5 +10,5 @@ export * from './library_migrate';
 export * from './library_contribute';
 export * from './library_publish';
 export * from './library_search';
-//export * from './project_init';
+export * from './project_init';
 export * from './project_properties';
