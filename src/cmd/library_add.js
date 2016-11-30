@@ -1,5 +1,6 @@
 
 import ProjectProperties from './project_properties';
+import LibraryProperties from './library_properties';
 import pipeline from 'when/pipeline';
 import {convertApiError} from './api';
 import {CommandSite} from './command';
@@ -39,13 +40,16 @@ export class LibraryAddCommand {
 	 */
 	run(state, site) {
 		this.site = site;
-		this.projectProperties = new ProjectProperties(this.site.projectDir());
+		const directory = this.site.projectDir();
+		this.libraryProperties = new LibraryProperties(directory);
+		this.projectProperties = new ProjectProperties(directory);
+
 		const lib = site.libraryIdent();
 		if (lib.version === undefined) {
 			lib.version = 'latest';
 		}
 		return pipeline([
-			() => this.ensureProjectExists(),
+			() => this.ensureProjectExists(directory),
 			() => this.loadProject(),
 			() => this.fetchLibrary(lib.name, lib.version),
 			(library) => this.addLibraryToProject(library),
@@ -53,25 +57,33 @@ export class LibraryAddCommand {
 		]);
 	}
 
-	ensureProjectExists() {
+	ensureProjectExists(directory) {
 		return this.projectExist().then(exists => {
 			if (!exists) {
-				return this.createProject();
+				throw new Error(`Project or library not found in directory ${directory}`);
 			}
 		});
 	}
 
 	projectExist() {
-		return this.projectProperties.exists();
+		return this.projectProperties.exists()
+			.then(exists => {
+				this.properties = this.projectProperties;
+				if (!exists) {
+					this.properties = this.libraryProperties;
+					exists = this.libraryProperties.exists();
+				}
+				return exists;
+			});
 	}
 
 	createProject() {
 		// save a blank project.properties
-		return this.projectProperties.save();
+		return this.properties.save();
 	}
 
 	loadProject() {
-		return this.projectProperties.load();
+		return this.properties.load();
 	}
 
 	fetchLibrary(name, version) {
@@ -91,11 +103,11 @@ export class LibraryAddCommand {
 	addLibraryToProject(library) {
 		return pipeline([
 			() => this.site.addedLibrary(library.name, library.version),
-			() => this.projectProperties.addDependency(library.name, library.version)
+			() => this.properties.addDependency(library.name, library.version)
 		]);
 	}
 
 	saveProject() {
-		return this.projectProperties.save();
+		return this.properties.save();
 	}
 }
