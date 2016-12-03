@@ -4,6 +4,7 @@ import LibraryProperties from './library_properties';
 import pipeline from 'when/pipeline';
 import {convertApiError} from './api';
 import {CommandSite} from './command';
+import {findProject} from './library';
 
 
 
@@ -40,14 +41,12 @@ export class LibraryAddCommand {
 	 */
 	run(state, site) {
 		this.site = site;
-		const directory = this.site.projectDir();
-		this.libraryProperties = new LibraryProperties(directory);
-		this.projectProperties = new ProjectProperties(directory);
 
 		const lib = site.libraryIdent();
 		if (lib.version === undefined) {
 			lib.version = 'latest';
 		}
+		const directory = this.site.projectDir();
 		return pipeline([
 			() => this.ensureProjectExists(directory),
 			() => this.loadProject(),
@@ -58,24 +57,13 @@ export class LibraryAddCommand {
 	}
 
 	ensureProjectExists(directory) {
-		return this.projectExist().then(exists => {
-			if (!exists) {
-				throw new Error(`Project or library not found in directory ${directory}`);
-			}
-		});
-	}
-
-	projectExist() {
-		return this.projectProperties.exists()
-			.then(exists => {
-				this.properties = this.projectProperties;
-				if (!exists) {
-					this.properties = this.libraryProperties;
-					exists = this.libraryProperties.exists();
-				}
-				return exists;
+		return findProject(directory, true)
+			.then((project) => {
+				this.properties = project;
+				return project;
 			});
 	}
+
 
 	createProject() {
 		// save a blank project.properties
