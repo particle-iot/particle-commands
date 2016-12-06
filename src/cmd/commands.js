@@ -3,6 +3,7 @@
 
 export * from './api';
 export * from './library';
+export * from './library_add';
 export * from './library_delete';
 export * from './library_init';
 export * from './library_install';

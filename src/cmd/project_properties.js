@@ -108,9 +108,6 @@ export default class ProjectProperties {
 	}
 
 	libraryDirectory(vendored, libName) {
-		if (!vendored) {
-			throw new Error('non-vendored library install not yet supported. Come back later.');
-		}
 		const relative = vendored ? 'lib' : '.lib';
 		return path.join(this.dir, relative, libName);
 	}
