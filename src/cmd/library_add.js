@@ -1,6 +1,4 @@
 
-import ProjectProperties from './project_properties';
-import LibraryProperties from './library_properties';
 import pipeline from 'when/pipeline';
 import {convertApiError} from './api';
 import {CommandSite} from './command';

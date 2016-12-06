@@ -2,7 +2,7 @@
 import {expect, sinon} from '../test-setup';
 import {LibrarySearchCommand} from '../../src/cmd/library_search';
 
-describe('LibrarySearchCommand', () => {
+describe('LibrarySearchC    ommand', () => {
 	it('handles api errors', () => {
 		const sut = new LibrarySearchCommand();
 		const apiError = new Error();
