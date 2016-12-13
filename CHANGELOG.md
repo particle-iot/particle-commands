@@ -3,7 +3,17 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 0.2.0 - 2016-10-19
+## 0.2.2 - 2016-12-13
+### Added
+- library list command
+- project init command
+- non-vendored library install command
+- findProject method to locate the library or project properties
+
+### Changed
+- library install respects the version given 
+
+## 0.2.1 - 2016-10-19
 ### Changed
 - use latest version of particle-library-manager for the `contribute` repo method
 
