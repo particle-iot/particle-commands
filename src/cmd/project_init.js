@@ -39,8 +39,8 @@ export class ProjectInitCommandSite extends CommandSite {
 
 	/**
 	 * Notification of the entire project creation operation.
-	 * @param path      The directory that will contain the project
-	 * @param promise   The promise to create the project in the given directory
+	 * @param {String} path      The directory that will contain the project
+	 * @param {Promise} promise   The promise to create the project in the given directory
 	 */
 	notifyCreatingProject(path, promise) {
 
@@ -48,13 +48,13 @@ export class ProjectInitCommandSite extends CommandSite {
 
 	/**
 	 * Notification that the command is creating a file or directory.
-	 * @param path          The path being created
-	 * @param promise       The promise to create the path. The implementation may
+	 * @param {String} path          The path being created
+	 * @param {Promise} promise       The promise to create the path. The implementation may
 	 * extend this promise and return the new extension. This may be undefined also.
-	 * @return undefined to use the original promise, or a wrapped version of the promise.
+	 * @return {undefined|Promise} undefined to use the original promise, or a wrapped version of the promise.
 	 */
 	notifyCreatingPath(path, promise) {
-
+		return promise;
 	}
 
 	notifyProjectNotCreated(directory) {
@@ -85,7 +85,7 @@ export class ProjectInitCommand extends Command {
 			.then(() => Promise.resolve(site.directory()))
 			.then((_directory) => {
 				directory = _directory;
-				return Promise.resolve(site.filesystem())
+				return Promise.resolve(site.filesystem());
 			})
 			.then((_filesystem) => {
 				filesystem = _filesystem;
@@ -154,8 +154,9 @@ export class ProjectInitCommand extends Command {
 
 	/**
 	 * Determines if we can create the project in the specified directory.
-	 * @param {Object} fs            The filesystem to use to check for the presense of a directory.
-	 * @param {String} directory
+	 * @param {ProjectInitCommandSite} site The interaction site for this command
+	 * @param {Object} fs           The filesystem to use to check for the presence of a directory.
+	 * @param {String} directory    The directory to check
 	 * @returns {Promise}           resolves to a truthy value to continue creating the project.
 	 */
 	canCreateInDirectory(site, fs, directory) {
