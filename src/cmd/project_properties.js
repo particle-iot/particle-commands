@@ -107,12 +107,14 @@ export default class ProjectProperties {
 		return `dependencies.${name}`;
 	}
 
+	/**
+	 * Determines the location of the library that is installed into this project.
+	 * @param {booleabn} vendored   should be true
+	 * @param {string} libName the library name
+	 * @returns {string} the path where the library can be vendored to
+	 */
 	libraryDirectory(vendored, libName) {
-		if (!vendored) {
-			throw new Error('non-vendored library install not yet supported. Come back later.');
-		}
-		const relative = vendored ? 'lib' : '.lib';
-		return path.join(this.dir, relative, libName);
+		return path.join(this.dir, 'lib', libName);
 	}
 
 	dependencies() {
