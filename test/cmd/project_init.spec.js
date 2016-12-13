@@ -1,5 +1,5 @@
 import path from 'path';
-import {expect} from '../test-setup';
+import {expect, sinon} from '../test-setup';
 import {ProjectInitCommand} from '../../src/cmd/project_init';
 import {ProjectInitCommandSite} from '../../src/cmd/project_init';
 const fs = require('fs');
@@ -20,6 +20,7 @@ describe('project_init', () => {
 		function createProject(directory, allowDirectoryCreate) {
 			const cmd = new ProjectInitCommand();
 			const site = new ProjectInitCommandSite();
+			site.notifyProjectNotCreated = sinon.stub();
 			site.directory = () => directory;
 			if (allowDirectoryCreate!==undefined) {
 				site.notifyDirectoryExists = () => allowDirectoryCreate;
