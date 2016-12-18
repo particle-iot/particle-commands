@@ -200,6 +200,7 @@ export class ProjectInitCommand extends Command {
 		return this.createNotifyDirectory(site, fs, directory)
 			.then(() => this.createNotifyDirectory(site, fs, path.join(directory, 'src')))
 			.then(() => this.createNotifyFileIfNeeded(site, fs, projectFile, ''))
+			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, 'README.md'), 'README.md', {name}))
 			.then(() => this.createNotifyFileIfNeeded(site, fs, path.join(directory, name+'.ino'), ''))
 			.then(() => project.load())
 			.then(() => {

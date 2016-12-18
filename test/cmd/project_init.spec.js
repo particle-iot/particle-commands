@@ -7,11 +7,17 @@ import underscore from 'underscore';
 const fs = require('fs');
 const mockfs = require('mock-fs');
 
-
 describe('project_init', () => {
 
+	function addFile(target, filename) {
+		const content = fs.readFileSync(filename, 'utf-8');
+		target[filename] = content;
+	}
+
 	beforeEach(() => {
-		mockfs({});
+		const fs = {};
+		addFile(fs, ProjectInitCommand.templateFile('README.md'));
+		mockfs(fs);
 	});
 
 	afterEach(() => {
@@ -42,6 +48,7 @@ describe('project_init', () => {
 			expect(fs.existsSync(directory), 'expected project directory to exist').to.be.true;
 			expect(fs.existsSync(path.join(directory, 'src')), 'expected src directory to exist').to.be.true;
 			expect(fs.existsSync(path.join(directory, 'project.properties')), 'expected project.properties to exist').to.be.true;
+			expectTemplate(path.join(directory, 'README.md'), 'README.md', properties);
 
 			const project = new ProjectProperties(directory, {fs:ProjectProperties.buildFs(fs)});
 			return project.load()

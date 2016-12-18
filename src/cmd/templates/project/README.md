@@ -1,0 +1,1 @@
+Info about your <%=name=> project. 
