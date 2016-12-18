@@ -5,17 +5,22 @@ const legacy = 'legacy';
 const simple = 'simple';
 const extended = 'extended';
 
-function buildPromisefs() {
+function buildPromisefs(fs=nodeFs) {
 	const promisefs = {};
 	[
 		'readFile',
 		'writeFile',
 		'stat'
-	].forEach(fn => promisefs[fn] = promisify(nodeFs[fn]));
+	].forEach(fn => promisefs[fn] = promisify(fs[fn]));
 	return promisefs;
 }
 
 export default class ProjectProperties {
+
+	static buildFs(fs=nodeFs) {
+		return buildPromisefs(fs)
+	}
+
 	constructor(dir, { filename = 'project.properties', fs = buildPromisefs() } = {}) {
 		this.dir = dir;
 		this.fs = fs;
@@ -119,6 +124,16 @@ export default class ProjectProperties {
 
 	dependencies() {
 		return this.groups.dependencies || {};
+	}
+
+	setField(name, value) {
+		const prev = this.getField(name);
+		this.fields[name] = value;
+		return prev!==value;
+	}
+
+	getField(name) {
+		return this.fields[name];
 	}
 }
 
