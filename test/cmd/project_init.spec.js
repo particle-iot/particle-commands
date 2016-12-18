@@ -17,6 +17,7 @@ describe('project_init', () => {
 	beforeEach(() => {
 		const fs = {};
 		addFile(fs, ProjectInitCommand.templateFile('README.md'));
+		addFile(fs, ProjectInitCommand.templateFile('project.ino'));
 		mockfs(fs);
 	});
 
@@ -49,6 +50,7 @@ describe('project_init', () => {
 			expect(fs.existsSync(path.join(directory, 'src')), 'expected src directory to exist').to.be.true;
 			expect(fs.existsSync(path.join(directory, 'project.properties')), 'expected project.properties to exist').to.be.true;
 			expectTemplate(path.join(directory, 'README.md'), 'README.md', properties);
+			expectTemplate(path.join(directory, 'src', properties.name+'.ino'), 'project.ino', properties);
 
 			const project = new ProjectProperties(directory, {fs:ProjectProperties.buildFs(fs)});
 			return project.load()

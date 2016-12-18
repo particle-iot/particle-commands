@@ -195,13 +195,14 @@ export class ProjectInitCommand extends Command {
 	}
 
 	createProject(site, fs, directory, name) {
+		const properties = {name};
 		const projectFile = path.join(directory, 'project.properties');
 		const project = new ProjectProperties(directory, {fs:ProjectProperties.buildFs(fs)});
 		return this.createNotifyDirectory(site, fs, directory)
 			.then(() => this.createNotifyDirectory(site, fs, path.join(directory, 'src')))
 			.then(() => this.createNotifyFileIfNeeded(site, fs, projectFile, ''))
-			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, 'README.md'), 'README.md', {name}))
-			.then(() => this.createNotifyFileIfNeeded(site, fs, path.join(directory, name+'.ino'), ''))
+			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, 'README.md'), 'README.md', properties))
+			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, 'src', name+'.ino'), 'project.ino', properties))
 			.then(() => project.load())
 			.then(() => {
 				if (project.setField('name', name)) {
