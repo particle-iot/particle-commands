@@ -18,6 +18,7 @@
     "particle-api-js": "^6.1.0",
     "particle-library-manager": "^0.1.1",
     "semver": "^5.1.0",
+    "underscore": "^1.8.3",
     "when": "^3.7.2",
     "yeoman-environment": "^1.6.3",
     "yeoman-generator": "^0.24.1"
