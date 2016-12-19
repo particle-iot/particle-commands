@@ -1,6 +1,8 @@
 import {Command, CommandSite} from './command';
+import ProjectProperties from './project_properties';
 const promisify = require('es6-promisify');
 import path from 'path';
+import {validateField} from 'particle-library-manager';
 
 /**
  * Specification and base implementation for the site instance expected by
@@ -12,6 +14,13 @@ export class ProjectInitCommandSite extends CommandSite {
 	 * The directory where the project should be initialized.
 	 */
 	directory() {
+		throw Error('not implemented');
+	}
+
+	/**
+	 * The name of the project to create. Should pass isValidName() in the command.
+	 */
+	name() {
 		throw Error('not implemented');
 	}
 
@@ -65,12 +74,41 @@ export class ProjectInitCommandSite extends CommandSite {
 
 	}
 
+	error(error) {
+		throw error;
+	}
 }
 
 /**
  * Implements the project initialization command.
  */
 export class ProjectInitCommand extends Command {
+
+	static templateFile(name) {
+		return path.join(__dirname, 'templates', 'project', name);
+	}
+
+	static expandTemplate(fs, templateName, data) {
+		const readFile = promisify(fs.readFile);
+		return readFile(ProjectInitCommand.templateFile(templateName), 'utf-8')
+			.then(content => {
+				return ProjectInitCommand.templateEngine().template(content)(data);
+			});
+	}
+
+	static templateEngine() {
+		return require('underscore');
+	}
+
+	/**
+	 *
+	 * @param name
+	 * @returns {object} - key valid indicates if validation passed
+	 *                     key errors is an object with pairs of invalid field names and error messages
+	 */
+	validateName(name) {
+		return validateField('name', name);
+	}
 
 	/**
 	 *
@@ -79,27 +117,40 @@ export class ProjectInitCommand extends Command {
 	 * @returns {Promise} To run the project initialization command.
 	 */
 	run(state, site) {
-		let directory, filesystem;
+		let directory, filesystem, name;
 
 		return Promise.resolve()
-			.then(() => Promise.resolve(site.directory()))
+		.then(() => Promise.resolve(site.name()))
+		.then((_name) => {
+			name = _name;
+			const validate = this.validateName(name);
+			if (!validate.valid) {
+				throw new Error('name: '+validate.errors.name);
+			}
+			return Promise.resolve(site.directory());
+		})
 			.then((_directory) => {
 				directory = _directory;
-				return Promise.resolve(site.filesystem());
-			})
+			if (directory) {
+				return Promise.resolve(site.filesystem())
 			.then((_filesystem) => {
 				filesystem = _filesystem;
 				return this.canCreateInDirectory(site, filesystem, directory);
 			})
 			.then(create => {
 				if (create) {
-					let project = this.createProject(site, filesystem, directory);
+						let project = this.createProject(site, filesystem, directory, name);
 					project = site.notifyCreatingProject(directory, project) || project;
 					return project.then(() => site.notifyProjectCreated(directory));
 				} else {
 					return site.notifyProjectNotCreated(directory);
 				}
+			})
+			.catch(error => {
+				site.error(error);
 			});
+	}
+		})
 	}
 
 	createDirectoryIfNeeded(fs, directory) {
@@ -107,7 +158,7 @@ export class ProjectInitCommand extends Command {
 		return mkdir(directory)
 			.then(() => true)
 			.catch(error => {
-				if (error.code !== 'EEXIST') {
+				if (!error.code || error.code !== 'EEXIST') {
 					throw error;
 				}
 				return false;
@@ -123,11 +174,18 @@ export class ProjectInitCommand extends Command {
 			});
 	}
 
+	createNotifyTemplateIfNeeded(site, fs, targetFile, templateName, data) {
+		// assumes the parent directory of the template exists
+		const content = ProjectInitCommand.expandTemplate(fs, templateName, data);
+		return this.createNotifyFileIfNeeded(site, fs, targetFile, content);
+	}
+
 	// todo - these file related functions could be factored out since they are not specifically to do with project
 	// intiialization, and are reusable across commands that use the file system.
 	createFile(fs, path, content) {
 		const writeFile = promisify(fs.writeFile);
-		return writeFile(path, content);
+		return Promise.resolve(content)
+			.then((content) => writeFile(path, content));
 	}
 
 	createNotifyFile(site, fs, path, content) {
@@ -146,10 +204,21 @@ export class ProjectInitCommand extends Command {
 		});
 	}
 
-	createProject(site, fs, directory) {
+	createProject(site, fs, directory, name) {
+		const properties = {name};
+		const projectFile = path.join(directory, 'project.properties');
+		const project = new ProjectProperties(directory, {fs:ProjectProperties.buildFs(fs)});
 		return this.createNotifyDirectory(site, fs, directory)
 			.then(() => this.createNotifyDirectory(site, fs, path.join(directory, 'src')))
-			.then(() => this.createNotifyFileIfNeeded(site, fs, path.join(directory, 'project.properties', '')));
+			.then(() => this.createNotifyFileIfNeeded(site, fs, projectFile, ''))
+			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, 'README.md'), 'README.md', properties))
+			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, 'src', name+'.ino'), 'project.ino', properties))
+			.then(() => project.load())
+			.then(() => {
+				if (project.setField('name', name)) {
+					return project.save();
+	}
+			});
 	}
 
 	/**
@@ -171,6 +240,7 @@ export class ProjectInitCommand extends Command {
 			if (err.code!=='ENOENT') {
 				throw err;
 			}
+			// directory does not exist
 			return true;    // can create the project here (or at least attempt to.)
 		});
 	}
