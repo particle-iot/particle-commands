@@ -8,6 +8,7 @@ const particle = 'particle';
 const libraries = 'libraries';
 const projects = 'projects';
 const community = 'community';
+const mine = 'mine';
 
 const fsMkdir = promisify(fs.mkdir);
 const fsExists = promisify(fs.exists);
@@ -50,19 +51,27 @@ export class Projects {
 	}
 
 	librariesFolder() {
-		return path.join(this.myLibrariesFolder(), community);
-	}
-
-	myLibrariesFolder() {
 		return path.join(this.particleFolder(), libraries);
 	}
 
+	communityLibrariesFolder() {
+		return path.join(this.librariesFolder(), community);
+	}
+
+	myLibrariesFolder() {
+		return path.join(this.librariesFolder(), mine);
+	}
+
 	projectsFolder() {
-		return path.join(this.myProjectsFolder(), community);
+		return path.join(this.particleFolder(), projects);
+	}
+
+	communityProjectsFolder() {
+		return path.join(this.projectsFolder(), community);
 	}
 
 	myProjectsFolder() {
-		return path.join(this.particleFolder(), projects);
+		return path.join(this.projectsFolder(), mine);
 	}
 
 	ensureDirectoryExists(directory) {
