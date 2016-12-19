@@ -76,7 +76,7 @@ export class ProjectInitCommandSite extends CommandSite {
 
 	error(error) {
 		throw error;
-}
+	}
 }
 
 /**
@@ -92,8 +92,12 @@ export class ProjectInitCommand extends Command {
 		const readFile = promisify(fs.readFile);
 		return readFile(ProjectInitCommand.templateFile(templateName), 'utf-8')
 			.then(content => {
-				return require('underscore').template(content)(data);
+				return ProjectInitCommand.templateEngine().template(content)(data);
 			});
+	}
+
+	static templateEngine() {
+		return require('underscore');
 	}
 
 	/**
