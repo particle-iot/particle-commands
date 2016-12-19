@@ -14,3 +14,4 @@ export * from './library_publish';
 export * from './library_search';
 export * from './project_init';
 export * from './project_properties';
+export * from './projects';
