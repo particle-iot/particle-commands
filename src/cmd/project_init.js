@@ -74,6 +74,9 @@ export class ProjectInitCommandSite extends CommandSite {
 
 	}
 
+	error(error) {
+		throw error;
+}
 }
 
 /**
@@ -122,24 +125,27 @@ export class ProjectInitCommand extends Command {
 			}
 			return Promise.resolve(site.directory());
 		})
-		.then((_directory) => {
-			directory = _directory;
+			.then((_directory) => {
+				directory = _directory;
 			if (directory) {
 				return Promise.resolve(site.filesystem())
-				.then((_filesystem) => {
-					filesystem = _filesystem;
-					return this.canCreateInDirectory(site, filesystem, directory);
-				})
-				.then(create => {
-					if (create) {
+			.then((_filesystem) => {
+				filesystem = _filesystem;
+				return this.canCreateInDirectory(site, filesystem, directory);
+			})
+			.then(create => {
+				if (create) {
 						let project = this.createProject(site, filesystem, directory, name);
-						project = site.notifyCreatingProject(directory, project) || project;
-						return project.then(() => site.notifyProjectCreated(directory));
-					} else {
-						return site.notifyProjectNotCreated(directory);
-					}
-				});
-			}
+					project = site.notifyCreatingProject(directory, project) || project;
+					return project.then(() => site.notifyProjectCreated(directory));
+				} else {
+					return site.notifyProjectNotCreated(directory);
+				}
+			})
+			.catch(error => {
+				site.error(error);
+			});
+	}
 		})
 	}
 
@@ -207,7 +213,7 @@ export class ProjectInitCommand extends Command {
 			.then(() => {
 				if (project.setField('name', name)) {
 					return project.save();
-				}
+	}
 			});
 	}
 
