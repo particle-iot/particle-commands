@@ -22,19 +22,19 @@ describe('projects', () => {
 	});
 
 	it('can retrieve my projects common folder', () => {
-		expect(sut.myProjectsFolder()).equals(path.join(home, 'particle', 'projects', 'mine'));
+		expect(sut.myProjectsFolder()).equals(path.join(home, 'particle', 'projects'));
 	});
 
 	it('can retrieve community projects common folder', () => {
-		expect(sut.communityProjectsFolder()).equals(path.join(home, 'particle', 'projects', 'community'));
+		expect(sut.communityProjectsFolder()).equals(path.join(home, 'particle', 'community', 'projects'));
 	});
 
 	it('can retrieve my libraries common folder', () => {
-		expect(sut.myLibrariesFolder()).equals(path.join(home, 'particle', 'libraries', 'mine'));
+		expect(sut.myLibrariesFolder()).equals(path.join(home, 'particle', 'libraries'));
 	});
 
 	it('can retrieve community libraries common folder', () => {
-		expect(sut.communityLibrariesFolder()).equals(path.join(home, 'particle', 'libraries', 'community'));
+		expect(sut.communityLibrariesFolder()).equals(path.join(home, 'particle', 'community', 'libraries'));
 	});
 
 	it('can create a nested folder', () => {

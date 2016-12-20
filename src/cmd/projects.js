@@ -65,28 +65,24 @@ export class Projects {
 		return path.join(this.userHomeFolder(), particle);
 	}
 
-	_librariesCommonFolder() {
+	_communityFolder() {
+		return path.join(this.particleFolder(), community);
+	}
+
+	myLibrariesFolder() {
 		return path.join(this.particleFolder(), libraries);
 	}
 
 	communityLibrariesFolder() {
-		return path.join(this._librariesCommonFolder(), community);
+		return path.join(this._communityFolder(), libraries);
 	}
 
-	myLibrariesFolder() {
-		return path.join(this._librariesCommonFolder(), mine);
-	}
-
-	_projectsCommonFolder() {
+	myProjectsFolder() {
 		return path.join(this.particleFolder(), projects);
 	}
 
 	communityProjectsFolder() {
-		return path.join(this._projectsCommonFolder(), community);
-	}
-
-	myProjectsFolder() {
-		return path.join(this._projectsCommonFolder(), mine);
+		return path.join(this._communityFolder(), projects);
 	}
 
 	ensureDirectoryExists(directory) {
