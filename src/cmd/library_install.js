@@ -192,12 +192,12 @@ export class LibraryInstallCommand extends Command {
 				return cloudRepo.fetch(libName, libVersion);
 			})
 			.then((lib) => {
-				const libDir = libraryTargetStrategy(lib.name, lib.metadata.version);
+				const libDir = libraryTargetStrategy(lib.metadata.name, lib.metadata.version);
 				return site.notifyFetchingLibrary(lib.metadata, libDir)
 					.then(() => lib.copyTo(libDir))
 					.then(() => {
 						if (site.isAdaptersRequired()) {
-							return buildAdapters(libDir, lib.name);
+							return buildAdapters(libDir, lib.metadata.name);
 						}
 					})
 					.then(() => site.notifyInstalledLibrary(lib.metadata, libDir))
