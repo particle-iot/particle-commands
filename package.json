@@ -1,7 +1,7 @@
 {
   "name": "particle-commands",
   "description": "Library of UX-neutral commands that provide key functionality for developer tools",
-  "version": "0.2.3-rc.1",
+  "version": "0.2.3",
   "author": "Matthew McGowan",
   "bugs": {
     "url": "https://github.com/spark/particle-commands/issues"
@@ -15,7 +15,7 @@
   "dependencies": {
     "babel-runtime": "^6.9.2",
     "es6-promisify": "^4.1.0",
-    "particle-api-js": "^6.1.0",
+    "particle-api-js": "^6.4.1",
     "particle-library-manager": "^0.1.1",
     "semver": "^5.1.0",
     "underscore": "^1.8.3",
