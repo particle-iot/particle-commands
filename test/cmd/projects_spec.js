@@ -37,5 +37,13 @@ describe('projects', () => {
 		expect(sut.communityLibrariesFolder()).equals(path.join(home, 'particle', 'libraries', 'community'));
 	});
 
+	it('can create a nested folder', () => {
+		const dir = 'one/two/three';
+		return sut.ensureDirectoryExists(dir)
+			.then(() => {
+				const stat = fs.statSync(dir);
+				expect(stat.isDirectory()).to.be.equal(true);
+			});
+	})
 
 });

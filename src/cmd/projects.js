@@ -1,5 +1,4 @@
 
-import fs from 'fs';
 import path from 'path';
 import os from 'os';
 import promisify from 'es6-promisify';
@@ -10,35 +9,51 @@ const projects = 'projects';
 const community = 'community';
 const mine = 'mine';
 
-const fsMkdir = promisify(fs.mkdir);
-const fsExists = promisify(fs.exists);
+export class Projects {
+	constructor(fs=require('fs')) {
+		this.fsMkdir = promisify(fs.mkdir);
+		this.fsStat = promisify(fs.stat);
+	}
 
-function mkdir(name) {
-	return fsMkdir(name)
-		.then(() => true)
+	mkdir(name) {
+		return this.fsMkdir(name)
+		.then(() => {
+			return true;
+		})
 		.catch(error => {
-			if (error.code==='EEXIST')
+			if (error.code==='EEXIST') {
 				return false;
+			}
 			throw error;
 		});
-}
+	}
 
-function mkdirp(name) {
-	return fsExists(name).then(exists => {
-		if (!exists) {
-			const parent = path.dirname(name);
-			const makeit = mkdir(name);
-			let promise = makeit;
-			if (parent && parent!=='/') {
-				promise = mkdirp(parent).then(() => makeit);
+	mkdirp(name) {
+		return this.fsStat(name)
+		.then(stat => {
+			if (!stat.isDirectory()) {
+				const error = new Error('file already exists');
+				error.code = 'EEXIST';
+				throw error;
 			}
-			return promise;
-		}
-	});
-}
+			return false;
+		})
+		.catch(error => {
+			if (error.code==='ENOENT') {
+				const parent = path.dirname(name);
+				let promise;
+				if (parent && parent!=='/' && parent!=='.') {
+					promise = this.mkdirp(parent);
+				}
+				// even simply creating the promise causes them to be executed out of order
+				// we can only get the correct order by creating the promise when we are sure
+				// the parent folder has been created.
+				return promise ? promise.then(() => this.mkdir(name)) : this.mkdir(name);
+			}
+			throw error;
+		});
+	}
 
-
-export class Projects {
 
 	userHomeFolder() {
 		return os.homedir();
@@ -50,32 +65,31 @@ export class Projects {
 		return path.join(this.userHomeFolder(), particle);
 	}
 
-	librariesFolder() {
+	_librariesCommonFolder() {
 		return path.join(this.particleFolder(), libraries);
 	}
 
 	communityLibrariesFolder() {
-		return path.join(this.librariesFolder(), community);
+		return path.join(this._librariesCommonFolder(), community);
 	}
 
 	myLibrariesFolder() {
-		return path.join(this.librariesFolder(), mine);
+		return path.join(this._librariesCommonFolder(), mine);
 	}
 
-	projectsFolder() {
+	_projectsCommonFolder() {
 		return path.join(this.particleFolder(), projects);
 	}
 
 	communityProjectsFolder() {
-		return path.join(this.projectsFolder(), community);
+		return path.join(this._projectsCommonFolder(), community);
 	}
 
 	myProjectsFolder() {
-		return path.join(this.projectsFolder(), mine);
+		return path.join(this._projectsCommonFolder(), mine);
 	}
 
 	ensureDirectoryExists(directory) {
-		return mkdirp(directory);
+		return this.mkdirp(directory);
 	}
-
 }
