@@ -3,6 +3,7 @@ import ProjectProperties from './project_properties';
 const promisify = require('es6-promisify');
 import path from 'path';
 import {validateField} from 'particle-library-manager';
+const underscore =  require('underscore');
 
 /**
  * Specification and base implementation for the site instance expected by
@@ -88,16 +89,16 @@ export class ProjectInitCommand extends Command {
 		return path.join(__dirname, 'templates', 'project', name);
 	}
 
-	static expandTemplate(fs, templateName, data) {
+	expandTemplate(fs, templateName, data) {
 		const readFile = promisify(fs.readFile);
 		return readFile(ProjectInitCommand.templateFile(templateName), 'utf-8')
 			.then(content => {
-				return ProjectInitCommand.templateEngine().template(content)(data);
+				return this.processTemplate(content, data);
 			});
 	}
 
-	static templateEngine() {
-		return require('underscore');
+	processTemplate(content, data) {
+		return underscore.template(content)(data);
 	}
 
 	/**
@@ -176,7 +177,7 @@ export class ProjectInitCommand extends Command {
 
 	createNotifyTemplateIfNeeded(site, fs, targetFile, templateName, data) {
 		// assumes the parent directory of the template exists
-		const content = ProjectInitCommand.expandTemplate(fs, templateName, data);
+		const content = this.expandTemplate(fs, templateName, data);
 		return this.createNotifyFileIfNeeded(site, fs, targetFile, content);
 	}
 
