@@ -4,6 +4,7 @@ import {extended, legacy} from './project_properties';
 import path from 'path';
 import LibraryProperties from './library_properties';
 import {findProject} from './library';
+import Projects from './projects';
 
 /**
  * Specification and base implementation for the site instance expected by
@@ -62,30 +63,6 @@ export class LibraryInstallCommandSite extends CommandSite {
 		return Promise.resolve();
 	}
 
-	/**
-	 * Allows the home path to be overridden in specific cases.
-	 */
-	homePathOverride() {
-
-	}
-
-	findHomePath(defaultPath = __dirname, fs = require('fs')) {
-		const envVars = [
-			'home',
-			'HOME',
-			'HOMEPATH',
-			'USERPROFILE'
-		];
-
-		for (let i=0;i<envVars.length;i++) {
-			const dir = process.env[envVars[i]];
-			if (dir && fs.existsSync(dir)) {
-				return dir;
-			}
-		}
-		return defaultPath;
-	};
-
 }
 
 export function buildAdapters(libDir, libName) {
@@ -143,9 +120,7 @@ export class LibraryInstallCommand extends Command {
 	 * @private
 	 */
 	_centralLibrariesDirectory(site) {
-		const overrideDir = site.homePathOverride();
-		const homeDir = site.findHomePath();
-		return overrideDir || path.join(homeDir, '.particle', 'libraries');
+		return Projects.communityLibrariesFolder();
 	}
 
 	/**

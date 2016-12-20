@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.2.4 - 2016-12-20
+### Changed
+- library install command copies libraries to the new community libraries directory
+
 ## 0.2.3 - 2016-12-20
 ### Added
 - example README.md and project.ino templates to project init command

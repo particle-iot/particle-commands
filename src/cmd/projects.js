@@ -54,6 +54,22 @@ export class Projects {
 		});
 	}
 
+	findHomePath(defaultPath = __dirname, fs = require('fs')) {
+		const envVars = [
+			'home',
+			'HOME',
+			'HOMEPATH',
+			'USERPROFILE'
+		];
+
+		for (let i=0;i<envVars.length;i++) {
+			const dir = process.env[envVars[i]];
+			if (dir && fs.existsSync(dir)) {
+				return dir;
+			}
+		}
+		return defaultPath;
+	};
 
 	userHomeFolder() {
 		return os.homedir();
