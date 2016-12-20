@@ -61,6 +61,11 @@ describe('library list', () => {
 			return expectFetchesCategory('recent', 'all', undefined, '-date');
 		});
 
+		it('community', () => {
+			return expectFetchesCategory('community', 'all', 'mine', 'official,verified,popularity,name');
+		});
+
+
 	});
 
 	describe('fetchLists', () => {
