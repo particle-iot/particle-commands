@@ -102,7 +102,7 @@ export class ProjectInitCommand extends Command {
 
 	/**
 	 *
-	 * @param name
+	 * @param {string} name The name to validate
 	 * @returns {object} - key valid indicates if validation passed
 	 *                     key errors is an object with pairs of invalid field names and error messages
 	 */
@@ -120,37 +120,37 @@ export class ProjectInitCommand extends Command {
 		let directory, filesystem, name;
 
 		return Promise.resolve()
-		.then(() => Promise.resolve(site.name()))
-		.then((_name) => {
-			name = _name;
-			const validate = this.validateName(name);
-			if (!validate.valid) {
-				throw new Error('name: '+validate.errors.name);
-			}
-			return Promise.resolve(site.directory());
-		})
+			.then(() => Promise.resolve(site.name()))
+			.then((_name) => {
+				name = _name;
+				const validate = this.validateName(name);
+				if (!validate.valid) {
+					throw new Error('name: '+validate.errors.name);
+				}
+				return Promise.resolve(site.directory());
+			})
 			.then((_directory) => {
 				directory = _directory;
-			if (directory) {
-				return Promise.resolve(site.filesystem())
-			.then((_filesystem) => {
-				filesystem = _filesystem;
-				return this.canCreateInDirectory(site, filesystem, directory);
-			})
-			.then(create => {
-				if (create) {
-						let project = this.createProject(site, filesystem, directory, name);
-					project = site.notifyCreatingProject(directory, project) || project;
-					return project.then(() => site.notifyProjectCreated(directory));
-				} else {
-					return site.notifyProjectNotCreated(directory);
+				if (directory) {
+					return Promise.resolve(site.filesystem())
+					.then((_filesystem) => {
+						filesystem = _filesystem;
+						return this.canCreateInDirectory(site, filesystem, directory);
+					})
+					.then(create => {
+						if (create) {
+							let project = this.createProject(site, filesystem, directory, name);
+							project = site.notifyCreatingProject(directory, project) || project;
+							return project.then(() => site.notifyProjectCreated(directory));
+						} else {
+							return site.notifyProjectNotCreated(directory);
+						}
+					})
+					.catch(error => {
+						site.error(error);
+					});
 				}
-			})
-			.catch(error => {
-				site.error(error);
 			});
-	}
-		})
 	}
 
 	createDirectoryIfNeeded(fs, directory) {
@@ -217,7 +217,7 @@ export class ProjectInitCommand extends Command {
 			.then(() => {
 				if (project.setField('name', name)) {
 					return project.save();
-	}
+				}
 			});
 	}
 

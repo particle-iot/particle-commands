@@ -18,7 +18,7 @@ function buildPromisefs(fs=nodeFs) {
 export default class ProjectProperties {
 
 	static buildFs(fs=nodeFs) {
-		return buildPromisefs(fs)
+		return buildPromisefs(fs);
 	}
 
 	constructor(dir, { filename = 'project.properties', fs = buildPromisefs() } = {}) {
