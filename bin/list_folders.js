@@ -1,11 +1,12 @@
 
-import {Projects} from '../src/cmd/Projects';
+import {Projects, Libraries} from '../src/cmd/Projects';
 
 
 const projects = new Projects();
+const libraries = new Libraries();
 
 
-projects.myLibrariesFolder().then(path => {
+libraries.myLibrariesFolder().then(path => {
 	console.log('my libraries:', path);
 });
 projects.myProjectsFolder().then(path => {
