@@ -17,18 +17,18 @@ export class LibraryListCommandSite extends CommandSite {
 	 * official: official libraries
 	 * verified: verified third party libraries
 	 * featured: featured libraries - libraries to draw user's attention to
-	 * other: libraries that don't fall into the categories above
+	 * popular: libraries that don't fall into the categories above, sorted by most popular first
 	 * mine: user's current libraries
 	 * recent: recently updated libraries
+	 * community: not-my libraries sorted by official, verified, popularity and then name
 	 *
 	 * The value of each section is an object:
 	 * ```
 	 * {
 	 *    page: Number  // page to retrieve
-	 *    count: Number // the size of each page
+	 *    limit: Number // the size of each page
 	 *    sort: String  // override the default sort order for this section. Values are
 	 *      [-]name, installs, date
-	 *    name: String  // override the default name filter. if null, removes the global name filter for this item.
 	 *    architectures: String  // comma-separated list of architectures, or * for all
 	 *    filter: String   // text filter to apply to the list of names
 	 * }
@@ -43,10 +43,9 @@ export class LibraryListCommandSite extends CommandSite {
 	 * {
 	 *    sort: String; default sort order
 	 *    page: Number; default page to retrieve
-	 *    count: Number; default page size
-	 *    name: String; default name filter
+	 *    limit: Number; default page size
+	 *    filter: String; default name filter
 	 *    architectures: String; comma-separated list of architectures to filter on
-	 *    filter: String; string
 	 * }
 	 */
 	settings() {
@@ -65,7 +64,8 @@ export class LibraryListCommandSite extends CommandSite {
 	}
 
 	/**
-	 * Notification of a promise to fetch a given library list.
+	 * Notification of a promise to fetch a given library list. The result of the promise is the list of libraries.
+	 * NB: Currently unused.
 	 * @param {Promise} promise   The promise to fetch the list of libraries
 	 * @param {String} name      The configuration name
 	 * @param {Object} settings  The final settings for fetching the list
@@ -77,7 +77,8 @@ export class LibraryListCommandSite extends CommandSite {
 	}
 
 	/**
-	 * Notification that all the lists are being fetched
+	 * Notification that all the lists are being fetched. The result of the promise is an object, with each
+	 * list keyed by the name of the list.
 	 * @param {Promise} promise   The promise to fetch all library lists
 	 * @param {Object} settings  The settings used to fetch each list
 	 */
@@ -107,7 +108,8 @@ export class LibraryListCommand extends Command {
 			featured: this._makeCategory('featured'),
 			popular: this._makeCategory('public', 'verified,official'),
 			mine: this._makeCategory('mine', undefined, 'name'),
-			recent: this._makeCategory('all', undefined, '-date')
+			recent: this._makeCategory('all', undefined, '-date'),
+			community: this._makeCategory('all', 'mine', 'official,verified,popularity,name')
 		};
 	}
 
@@ -124,18 +126,18 @@ export class LibraryListCommand extends Command {
 		let client, settings, sections, config, target;
 
 		let result = Promise.resolve()
-			.then(() => Promise.resolve(site.apiClient()))
+			.then(() => site.apiClient())
 			.then((_client) => {
 				client = _client;
-				return Promise.resolve(site.settings());
+				return site.settings();
 			})
 			.then((_settings) => {
 				settings = _settings;
-				return Promise.resolve(site.sections());
+				return site.sections();
 			})
 			.then((_sections) => {
 				sections = _sections;
-				return Promise.resolve(site.target());
+				return site.target();
 			})
 			.then((_target) => {
 				target = _target;
