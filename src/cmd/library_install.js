@@ -142,8 +142,10 @@ export class LibraryInstallCommand extends Command {
 		}
 		const projectMustExist = vendored;  // vendored libraries require a project to install into
 		return findProject(targetDir, projectMustExist)
-			.then((properties) => {
-				const installStrategy = vendored ? vendoredInstallStrategy(properties) : nameVersionInstallStrategy(this._centralLibrariesDirectory(site));
+			.then(properties => {
+				return vendored ? vendoredInstallStrategy(properties) : this._centralLibrariesDirectory(site).then(dir => nameVersionInstallStrategy(dir));
+			})
+			.then(installStrategy => {
 				if (libName) {
 					return this.installSingleLib(site, cloudRepo, vendored, libName, libVersion, installStrategy, properties, context);
 				} else {
