@@ -3,7 +3,7 @@ import path from 'path';
 import os from 'os';
 import promisify from 'es6-promisify';
 
-const particle = 'particle';
+const particle = 'Particle';
 const libraries = 'libraries';
 const projects = 'projects';
 const community = 'community';
