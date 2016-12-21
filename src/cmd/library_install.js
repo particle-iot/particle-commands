@@ -137,12 +137,15 @@ export class LibraryInstallCommand extends Command {
 		const cloudRepo = new CloudLibraryRepository({client});
 		const context = {};
 		const vendored = site.isVendored();
+		let properties;
 		if (!vendored && !libName) {
 			throw Error('Please provide a library name to install');
 		}
 		const projectMustExist = vendored;  // vendored libraries require a project to install into
+
 		return findProject(targetDir, projectMustExist)
-			.then(properties => {
+			.then(_properties => {
+				properties = _properties;
 				return vendored ? vendoredInstallStrategy(properties) : this._centralLibrariesDirectory(site).then(dir => nameVersionInstallStrategy(dir));
 			})
 			.then(installStrategy => {
