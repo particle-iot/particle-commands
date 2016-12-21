@@ -4,7 +4,7 @@ import {extended, legacy} from './project_properties';
 import path from 'path';
 import LibraryProperties from './library_properties';
 import {findProject} from './library';
-import Projects from './projects';
+import {Projects} from './projects';
 
 /**
  * Specification and base implementation for the site instance expected by
@@ -120,7 +120,7 @@ export class LibraryInstallCommand extends Command {
 	 * @private
 	 */
 	_centralLibrariesDirectory(site) {
-		return Projects.communityLibrariesFolder();
+		return new Projects().communityLibrariesFolder();
 	}
 
 	/**
