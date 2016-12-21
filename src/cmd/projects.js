@@ -7,7 +7,6 @@ const particle = 'particle';
 const libraries = 'libraries';
 const projects = 'projects';
 const community = 'community';
-const mine = 'mine';
 
 export class Projects {
 	constructor(fs=require('fs')) {
@@ -75,10 +74,39 @@ export class Projects {
 		return os.homedir();
 	}
 
-	// todo - documnents folder?
+	windowsDocumentsFolder() {
+		const winreg = require('winreg');
+		const regKey = winreg({
+			hive: winreg.HKCU,                                        // open registry hive HKEY_CURRENT_USER
+			key:  '\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders' // key containing user folder paths
+		});
+		let documents;
+
+		// list "Documents" folder path
+		regKey.values((err, items) => {
+			if (err) {
+				console.log('ERROR: '+err);
+			} else {
+				for (let i=0; i<items.length; i++) {
+					if (items[i].name === 'Personal') {
+						documents = items[i].value;
+					}
+				}
+			}
+		});
+		return documents;
+	}
+
+	documentsFolder() {
+		if (process.platform==='win32') {
+			return this.windowsDocumentsFolder() || this.userHomeFolder();
+		} else {
+			return this.userHomeFolder();
+		}
+	}
 
 	particleFolder() {
-		return path.join(this.userHomeFolder(), particle);
+		return path.join(this.documentsFolder(), particle);
 	}
 
 	_communityFolder() {
