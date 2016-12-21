@@ -1,13 +1,18 @@
-
-/**
- * This is the main file in your your "<%=name%>" project.
- * Write some code, make shiz happen.
+/*
+ * Project <%=name%>
+ * Description:
+ * Author:
+ * Date:
  */
 
- void setup() {
+// setup() runs once, when the device is first turned on.
+setup() {
+  // Put initialization like pinMode and begin functions here.
 
- }
+}
 
- void loop() {
+// loop() runs over and over again, as quickly as it can execute.
+loop() {
+  // The core of your code will likely live here.
 
- }
+}
