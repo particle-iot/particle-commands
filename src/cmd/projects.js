@@ -75,58 +75,70 @@ export class Projects {
 	}
 
 	windowsDocumentsFolder() {
-		const winreg = require('winreg');
-		const regKey = winreg({
-			hive: winreg.HKCU,                                        // open registry hive HKEY_CURRENT_USER
-			key:  '\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders' // key containing user folder paths
-		});
-		let documents;
+		return new Promise((fulfill, reject) => {
+			const winreg = require('winreg');
+			const regKey = winreg({
+				hive: winreg.HKCU,                                        // open registry hive HKEY_CURRENT_USER
+				key:  '\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders' // key containing user folder paths
+			});
+			let documents;
 
-		// list "Documents" folder path
-		regKey.values((err, items) => {
-			if (err) {
-				console.log('ERROR: '+err);
-			} else {
-				for (let i=0; i<items.length; i++) {
-					if (items[i].name === 'Personal') {
-						documents = items[i].value;
+			// list "Documents" folder path
+			regKey.values((err, items) => {
+				if (err) {
+//					console.log('ERROR: '+err);
+				} else {
+					for (let i=0; i<items.length; i++) {
+						if (items[i].name.toLowerCase() === 'personal') {
+							documents = items[i].value;
+						}
 					}
 				}
-			}
+			});
+			return fulfill(documents);
 		});
-		return documents;
 	}
 
 	documentsFolder() {
 		if (process.platform==='win32') {
-			return this.windowsDocumentsFolder() || this.userHomeFolder();
+			return this.windowsDocumentsFolder()
+				.then(documents => {
+					return documents || this.userHomeFolder();
+				});
 		} else {
 			return this.userHomeFolder();
 		}
 	}
 
 	particleFolder() {
-		return path.join(this.documentsFolder(), particle);
+		return this.join(this.documentsFolder(), particle);
 	}
 
 	_communityFolder() {
-		return path.join(this.particleFolder(), community);
+		return this.join(this.particleFolder(), community);
 	}
 
 	myLibrariesFolder() {
-		return path.join(this.particleFolder(), libraries);
+		return this.join(this.particleFolder(), libraries);
 	}
 
 	communityLibrariesFolder() {
-		return path.join(this._communityFolder(), libraries);
+		return this.join(this._communityFolder(), libraries);
 	}
 
 	myProjectsFolder() {
-		return path.join(this.particleFolder(), projects);
+		return this.join(this.particleFolder(), projects);
 	}
 
 	communityProjectsFolder() {
-		return path.join(this._communityFolder(), projects);
+		return this.join(this._communityFolder(), projects);
+	}
+
+	join(path1, path2) {
+		return Promise.resolve(path1)
+			.then(path1 => {
+				return path.join(path1, path2);
+			});
 	}
 
 	ensureDirectoryExists(directory) {

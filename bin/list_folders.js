@@ -4,5 +4,10 @@ import {Projects} from '../src/cmd/Projects';
 
 const projects = new Projects();
 
-console.log('my libraries:', projects.myLibrariesFolder());
-console.log('my libraries:', projects.myProjectsFolder());
+
+projects.myLibrariesFolder().then(path => {
+	console.log('my libraries:', path);
+});
+projects.myProjectsFolder().then(path => {
+	console.log('my projects:', path);
+});
