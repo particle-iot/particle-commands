@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.2.6 - 2016-12-22
+### Changed
+- fix typo in project.ino template
+
 ## 0.2.5 - 2016-12-21
 ### Changed
 - refactor the `Projects` class into `Projects` and `Libraries`
