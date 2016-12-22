@@ -3,6 +3,15 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.2.5 - 2016-12-21
+### Changed
+- refactor the `Projects` class into `Projects` and `Libraries`
+- library list command supports 'Community' as a section
+- refreshed README.md and project.ino templates in project init command
+- project init command adds the project name to project.properties
+- default folders on Windows uses the `Documents` folder as a base path.
+- default folders API changed from synchronous to asynchronous
+
 ## 0.2.4 - 2016-12-20
 ### Changed
 - library install command copies libraries to the new community libraries directory
