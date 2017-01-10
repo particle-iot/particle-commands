@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+### 0.2.7 - 2017-01-10
+### Changed
+- update particle-library-manager module to latest version
+
 ## 0.2.6 - 2016-12-22
 ### Changed
 - fix typo in project.ino template
