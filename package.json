@@ -15,6 +15,7 @@
   "dependencies": {
     "babel-runtime": "^6.9.2",
     "es6-promisify": "^4.1.0",
+    "mkdirp": "^0.5.1",
     "particle-api-js": "^6.4.1",
     "particle-library-manager": "^0.1.6",
     "semver": "^5.1.0",

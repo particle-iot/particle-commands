@@ -1,5 +1,6 @@
 import {Command, CommandSite} from './command';
 import ProjectProperties from './project_properties';
+import mkdirp from 'mkdirp';
 const promisify = require('es6-promisify');
 import path from 'path';
 import {validateField} from 'particle-library-manager';
@@ -155,8 +156,8 @@ export class ProjectInitCommand extends Command {
 	}
 
 	createDirectoryIfNeeded(fs, directory) {
-		const mkdir = promisify(fs.mkdir);
-		return mkdir(directory)
+		const mkdir = promisify(mkdirp);
+		return mkdir(directory, { fs })
 			.then(() => true)
 			.catch(error => {
 				if (!error.code || error.code !== 'EEXIST') {
