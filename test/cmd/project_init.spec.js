@@ -94,16 +94,6 @@ describe('project_init', () => {
 				});
 		});
 
-		it('fails with an error when the parent directory does not exist', () => {
-			return createProject({directory:'dir1/dir2', name:'nested'})
-				.then(() => {
-					throw Error('expected exception');
-				})
-				.catch(error => {
-					expect(error).has.property('code').equal('ENOENT');
-				});
-		});
-
 		it('fails with a validation error when the name is not valid', () => {
 			return createProject({directory:'dir5', name:'$$invalid$$'})
 				.then(() => {
