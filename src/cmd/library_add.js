@@ -1,8 +1,8 @@
 
 import pipeline from 'when/pipeline';
-import {convertApiError} from './api';
-import {CommandSite} from './command';
-import {findProject} from './library';
+import { convertApiError } from './api';
+import { CommandSite } from './command';
+import { findProject } from './library';
 
 
 

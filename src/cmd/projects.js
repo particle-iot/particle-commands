@@ -68,7 +68,7 @@ class SystemFolders {
 			}
 		}
 		return defaultPath;
-	};
+	}
 
 	userHomeFolder() {
 		return os.homedir();

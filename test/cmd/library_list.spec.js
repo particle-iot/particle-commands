@@ -1,6 +1,6 @@
 
-import {expect, sinon} from '../test-setup';
-import {LibraryListCommand} from "../../src/cmd/library_list";
+import { expect, sinon } from '../test-setup';
+import { LibraryListCommand } from '../../src/cmd/library_list';
 
 
 describe('library list', () => {
@@ -13,7 +13,7 @@ describe('library list', () => {
 		function expectFetchesCategory(name, scope, excludeScope, sort) {
 			const client = { libraries: sinon.stub().returns(Promise.resolve(123)) };
 			const site = {
-				settings: () => {return {}},
+				settings: () => {return {};},
 				sections: () => {
 					const obj = {};
 					obj[name] = {};
@@ -87,8 +87,8 @@ describe('library list', () => {
 			const list2 = Promise.resolve(456);
 			const client = { libraries: sinon.stub().returns(list1, list2) };
 			const site = { notifyFetchList: sinon.stub(), notifyFetchLists: sinon.stub() };
-			const settings = {a:'A'};
-			const config = sut.normalizeConfig({}, {mine:{}, official:{}});
+			const settings = { a:'A' };
+			const config = sut.normalizeConfig({}, { mine:{}, official:{} });
 			const result = sut.fetchLists(site, client, config, target);
 			return expect(result).to.eventually.deep.equal(target);
 		});
@@ -101,7 +101,7 @@ describe('library list', () => {
 			const promise = sut._addResultToTarget(list, 'abc', target);
 			const client = { libraries: sinon.stub().returns(list) };
 			const site = { notifyFetchList: sinon.stub() };
-			const settings = {a:'A'};
+			const settings = { a:'A' };
 			const result = sut.fetchList(site, client, 'abc', settings, target);
 			expect(client.libraries).to.have.been.calledWith(settings);
 			expect(result).to.be.deep.equal(promise);
@@ -114,7 +114,7 @@ describe('library list', () => {
 			const promise2 = sut._addResultToTarget(list, 'abc', target);
 			const client = { libraries: sinon.stub().returns(list) };
 			const site = { notifyFetchList: sinon.stub() };
-			const settings = {a:'A'};
+			const settings = { a:'A' };
 			const result = sut.fetchList(site, client, 'abc', settings);
 			expect(site.notifyFetchList).to.have.been.calledWithMatch(promise2, 'abc', settings, target);
 			expect(result).to.be.deep.equal(promise);
@@ -127,7 +127,7 @@ describe('library list', () => {
 			const promise = sut._addResultToTarget(list, 'abc', target);
 			const client = { libraries: sinon.stub().returns(list) };
 			const site = { notifyFetchList: sinon.stub().returns('hi') };
-			const settings = {a:'A'};
+			const settings = { a:'A' };
 			const result = sut.fetchList(site, client, 'abc', settings);
 			expect(site.notifyFetchList).to.have.been.calledWith(promise, 'abc', settings);
 			expect(result).to.be.equal('hi');
@@ -138,16 +138,16 @@ describe('library list', () => {
 			const promise2 = sut._addResultToTarget(Promise.resolve(123), 'abc', target);
 			const client = { libraries: sinon.stub().returns(Promise.resolve(123)) };
 			const site = { notifyFetchList: sinon.stub().returns() };
-			const settings = {a:'A'};
+			const settings = { a:'A' };
 			const result = sut.fetchList(site, client, 'abc', settings);
 			expect(site.notifyFetchList).to.have.been.calledWithMatch(promise2, 'abc', settings, target);
-			return expect(result).to.eventually.be.deep.equal({abc:123});
+			return expect(result).to.eventually.be.deep.equal({ abc:123 });
 		});
 	});
 
 	describe('_buildFetchPromise', () => {
 		it('calls the site notifyFetchLists callback and uses the result', () => {
-			const site = {notifyFetchLists: sinon.stub().returns(123)};
+			const site = { notifyFetchLists: sinon.stub().returns(123) };
 			const lists = [];
 			const config = {};
 			const promise = sut._buildFetchPromise(site, lists);
@@ -157,7 +157,7 @@ describe('library list', () => {
 		});
 
 		it('calls the site notifyFetchLists callback and uses the original promise when the result is falsey', () => {
-			const site = {notifyFetchLists: sinon.stub().returns(0)};
+			const site = { notifyFetchLists: sinon.stub().returns(0) };
 			const lists = [];
 			const config = {};
 			const promise = sut._buildFetchPromise(site, lists);
@@ -167,12 +167,12 @@ describe('library list', () => {
 		});
 	});
 
-	describe("normalizeConfig", () => {
+	describe('normalizeConfig', () => {
 		function baseConfig() {
 			return {
 				a:'a',
 				b:'b'
-			}
+			};
 		}
 
 		it('returns an empty config when no settings are provided', () => {
@@ -182,8 +182,8 @@ describe('library list', () => {
 
 		it('propagates features in the base to each setting', () => {
 			const settings = {
-				one: {a:undefined},     // this will be removed
-				two: {c:'c', a:'A'}     //
+				one: { a:undefined },     // this will be removed
+				two: { c:'c', a:'A' }     //
 			};
 			const result = {
 				one: {

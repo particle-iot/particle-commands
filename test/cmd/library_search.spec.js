@@ -1,6 +1,6 @@
 
-import {expect, sinon} from '../test-setup';
-import {LibrarySearchCommand} from '../../src/cmd/library_search';
+import { expect, sinon } from '../test-setup';
+import { LibrarySearchCommand } from '../../src/cmd/library_search';
 
 describe('LibrarySearchCommand', () => {
 	it('handles api errors', () => {
@@ -52,7 +52,7 @@ describe('LibrarySearchCommand', () => {
 		const verifyReject = (error) => {
 			expect(error).to.match(/API error/);
 			expect(site.notifyListLibrariesComplete).to.be.calledOnce;
-		}
+		};
 
 		return execute().then(verify, verifyReject);
 	});

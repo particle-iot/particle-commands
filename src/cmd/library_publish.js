@@ -1,5 +1,5 @@
-import {Command, CommandSite} from './command';
-import {convertApiError} from './api';
+import { Command, CommandSite } from './command';
+import { convertApiError } from './api';
 
 /**
  */

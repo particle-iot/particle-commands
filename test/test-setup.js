@@ -4,7 +4,7 @@
 import 'babel-polyfill';
 import chai from 'chai';
 import td from 'testdouble';
-import tdChai  from "testdouble-chai";
+import tdChai from 'testdouble-chai';
 
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';

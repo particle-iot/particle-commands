@@ -1,4 +1,4 @@
-import {expect} from '../test-setup';
+import { expect } from '../test-setup';
 import fs from 'fs';
 import ProjectProperties from '../../src/cmd/project_properties';
 import getProjectFixture from '../fixtures/projects';
@@ -10,7 +10,7 @@ describe('ProjectProperties', () => {
 			const sut = new ProjectProperties(dir);
 			return sut.exists().then(result => {
 				expect(result).to.be.true;
-			})
+			});
 		});
 
 		it("returns false when project properties doesn't exist", () => {
@@ -18,8 +18,8 @@ describe('ProjectProperties', () => {
 			const sut = new ProjectProperties(dir);
 			return sut.exists().then(result => {
 				expect(result).to.be.false;
-			})
-		})
+			});
+		});
 	});
 
 	describe('load', () => {
@@ -35,7 +35,7 @@ describe('ProjectProperties', () => {
 	});
 
 	describe('save', () => {
-		it('saves the same content',  () => {
+		it('saves the same content', () => {
 			const dir = getProjectFixture('simple');
 			const sut = new ProjectProperties(dir);
 			const propsFile = `${dir}/project.properties`;
@@ -62,7 +62,7 @@ describe('ProjectProperties', () => {
 
 			return sut.save().then(() => {
 				const savedProperties = fs.readFileSync(`${dir}/project.properties`, 'utf8');
-				const expectedProperties = "name=my project\ndependencies.assettracker=1.0.0\n";
+				const expectedProperties = 'name=my project\ndependencies.assettracker=1.0.0\n';
 				expect(savedProperties).to.equal(expectedProperties);
 			});
 		});

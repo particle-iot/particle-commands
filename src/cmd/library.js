@@ -1,6 +1,6 @@
 
 import path from 'path';
-import {resourcesDir} from 'particle-library-manager';
+import { resourcesDir } from 'particle-library-manager';
 import LibraryProperties from './library_properties';
 import ProjectProperties from './project_properties';
 

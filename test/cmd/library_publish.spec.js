@@ -1,6 +1,6 @@
 
-import {expect, sinon} from '../test-setup';
-import {LibraryPublishCommand, LibraryPublishCommandSite} from '../../src/cmd/library_publish';
+import { expect, sinon } from '../test-setup';
+import { LibraryPublishCommand, LibraryPublishCommandSite } from '../../src/cmd/library_publish';
 
 describe('LibraryPublishCommand', () => {
 	it('handles api errors', () => {
@@ -47,7 +47,7 @@ describe('LibraryPublishCommand', () => {
 	it('publishes a library from the API', () => {
 		const sut = new LibraryPublishCommand();
 		const ident = 'mylib';
-		const library = {name:ident};
+		const library = { name:ident };
 		const client = {
 			publishLibrary: sinon.stub().resolves(library)
 		};

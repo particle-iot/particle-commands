@@ -1,6 +1,6 @@
-import {expect, sinon} from '../test-setup';
-import {Projects} from '../../src/cmd/projects';
-import {Libraries} from '../../src/cmd/projects';
+import { expect, sinon } from '../test-setup';
+import { Projects } from '../../src/cmd/projects';
+import { Libraries } from '../../src/cmd/projects';
 const fs = require('fs');
 const mockfs = require('mock-fs');
 import path from 'path';
@@ -48,6 +48,6 @@ describe('projects', () => {
 				const stat = fs.statSync(dir);
 				expect(stat.isDirectory()).to.be.equal(true);
 			});
-	})
+	});
 
 });

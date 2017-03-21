@@ -1,9 +1,9 @@
-import {Command, CommandSite} from './command';
+import { Command, CommandSite } from './command';
 import ProjectProperties from './project_properties';
 import mkdirp from 'mkdirp';
 const promisify = require('es6-promisify');
 import path from 'path';
-import {validateField} from 'particle-library-manager';
+import { validateField } from 'particle-library-manager';
 const underscore =  require('underscore');
 
 /**
@@ -207,9 +207,9 @@ export class ProjectInitCommand extends Command {
 	}
 
 	createProject(site, fs, directory, name) {
-		const properties = {name};
+		const properties = { name };
 		const projectFile = path.join(directory, 'project.properties');
-		const project = new ProjectProperties(directory, {fs:ProjectProperties.buildFs(fs)});
+		const project = new ProjectProperties(directory, { fs:ProjectProperties.buildFs(fs) });
 		return this.createNotifyDirectory(site, fs, directory)
 			.then(() => this.createNotifyDirectory(site, fs, path.join(directory, 'src')))
 			.then(() => this.createNotifyFileIfNeeded(site, fs, projectFile, ''))

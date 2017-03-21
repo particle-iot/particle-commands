@@ -1,7 +1,7 @@
 
-import {expect, sinon} from '../test-setup';
-import {LibraryInstallCommand, LibraryInstallCommandSite} from "../../src/cmd/library_install";
-import {legacy} from '../../src/cmd/project_properties';
+import { expect, sinon } from '../test-setup';
+import { LibraryInstallCommand, LibraryInstallCommandSite } from '../../src/cmd/library_install';
+import { legacy } from '../../src/cmd/project_properties';
 
 describe('library install', () => {
 

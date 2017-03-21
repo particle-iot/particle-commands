@@ -1,5 +1,5 @@
-import {Command, CommandSite} from './command';
-import {convertApiError} from './api';
+import { Command, CommandSite } from './command';
+import { convertApiError } from './api';
 
 /**
  * Specification and base implementation for the site instance expected by
@@ -60,7 +60,7 @@ export class LibraryDeleteCommand extends Command {
 
 		return Promise.resolve(this.site.apiClient()).then((apiClient) => {
 
-			const searchPromise = apiClient.libraries({filter: name});
+			const searchPromise = apiClient.libraries({ filter: name });
 
 			const deletePromise = apiClient.deleteLibrary({ name, force });
 

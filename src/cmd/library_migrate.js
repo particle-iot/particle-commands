@@ -1,10 +1,10 @@
-import {Command, CommandSite} from './command';
+import { Command, CommandSite } from './command';
 
-import {FileSystemLibraryRepository, FileSystemNamingStrategy} from 'particle-library-manager';
+import { FileSystemLibraryRepository, FileSystemNamingStrategy } from 'particle-library-manager';
 import path from 'path';
 import when from 'when';
 import pipeline from 'when/pipeline';
-import {buildAdapters} from './library_install';
+import { buildAdapters } from './library_install';
 
 export class LibraryMigrateCommandSite extends CommandSite {
 
@@ -57,7 +57,7 @@ class AbstractLibraryMigrateCommand extends Command {
 				.then(([res, err]) => {
 					return Promise.resolve(site.notifyEnd(libdir, res, err))
 					.then(() => {
-						return {libdir, res, err};
+						return { libdir, res, err };
 					});
 				});
 			});

@@ -80,6 +80,7 @@
     "doctoc": "doctoc --title '## Table of Contents' README.md",
     "list-folders": "node --require babel-register bin/list_folders.js",
     "lint": "eslint -f unix src/**/*.js",
+    "lint:fix": "eslint --fix -f unix src/ test/",
     "test": "mocha test test/cmd test/integration --compilers js:babel-register",
     "compile": "babel src -d dist --copy-files",
     "prepublish": "npm run compile",

@@ -1,6 +1,6 @@
 
-import {expect} from '../test-setup';
-import ProjectProperties, {legacy, simple, extended} from "../../src/cmd/project_properties";
+import { expect } from '../test-setup';
+import ProjectProperties, { legacy, simple, extended } from '../../src/cmd/project_properties';
 const fs = require('fs');
 const mockfs = require('mock-fs');
 const promisify = require('es6-promisify');
@@ -11,7 +11,7 @@ describe('project properties', () => {
 		stat: (...args) => promisify(fs.stat)(...args),
 		writeFile: (...args) => promisify(fs.writeFile)(...args),
 		readFile: (...args) => promisify(fs.readFile)(...args)
-	}});
+	} });
 
 	beforeEach((done) => {
 		mockfs({});
@@ -82,7 +82,7 @@ describe('project properties', () => {
 			value.1=one
 			value.2=two
 			`);
-			expect(sut.groups['value']).to.be.deep.equal({1:'one', 2:'two'});
+			expect(sut.groups['value']).to.be.deep.equal({ 1:'one', 2:'two' });
 		});
 
 		it('groups multiple nested properties with the same dotted prefix', () => {

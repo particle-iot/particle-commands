@@ -1,10 +1,10 @@
-import {Command, CommandSite} from './command';
-import {CloudLibraryRepository, FileSystemLibraryRepository, FileSystemNamingStrategy} from 'particle-library-manager';
-import {extended, legacy} from './project_properties';
+import { Command, CommandSite } from './command';
+import { CloudLibraryRepository, FileSystemLibraryRepository, FileSystemNamingStrategy } from 'particle-library-manager';
+import { extended, legacy } from './project_properties';
 import path from 'path';
 import LibraryProperties from './library_properties';
-import {findProject} from './library';
-import {Libraries} from './projects';
+import { findProject } from './library';
+import { Libraries } from './projects';
 
 /**
  * Specification and base implementation for the site instance expected by
@@ -134,7 +134,7 @@ export class LibraryInstallCommand extends Command {
 
 		const [libName,libVersion] = (site.libraryName()||'').split('@');
 		const client = site.apiClient();
-		const cloudRepo = new CloudLibraryRepository({client});
+		const cloudRepo = new CloudLibraryRepository({ client });
 		const context = {};
 		const vendored = site.isVendored();
 		let properties;

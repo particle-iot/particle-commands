@@ -1,4 +1,4 @@
-import {Command, CommandSite} from './command';
+import { Command, CommandSite } from './command';
 
 /**
  * Specification and base implementation for the site instance expected by
@@ -114,7 +114,7 @@ export class LibraryListCommand extends Command {
 	}
 
 	_makeCategory(scope, excludeScope, sort) {
-		return {scope, excludeScope, sort};
+		return { scope, excludeScope, sort };
 	}
 
 	/**
