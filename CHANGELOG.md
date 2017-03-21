@@ -3,6 +3,11 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+### 0.2.10 - 2017-03-21
+### Changed
+- update particle-library-manager module to 0.1.11 which updates yeoman
+- update to latest particle linting config
+
 ### 0.2.9 - 2017-01-23
 ### Changed
 - update particle-library-manager module to latest version
