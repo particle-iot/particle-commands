@@ -81,8 +81,11 @@ export default class ProjectProperties {
 		const stat = this.fs.stat(this.name());
 		return stat.then(stats => {
 			return stats.isFile();
-		},
-		err => {
+		})
+		.catch(err => {
+			if (err.code!=='ENOENT') {
+				throw err;
+			}
 			return false;
 		});
 	}
