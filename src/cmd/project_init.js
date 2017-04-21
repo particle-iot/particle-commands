@@ -5,6 +5,7 @@ const promisify = require('es6-promisify');
 import path from 'path';
 import { validateField } from 'particle-library-manager';
 const underscore =  require('underscore');
+const analytics = require('../lib/analytics');
 
 /**
  * Specification and base implementation for the site instance expected by
@@ -143,7 +144,8 @@ export class ProjectInitCommand extends Command {
 						if (create) {
 							let project = this.createProject(site, filesystem, directory, name);
 							project = site.notifyCreatingProject(directory, project) || project;
-							return project.then(() => site.notifyProjectCreated(directory));
+							return project.then(() => site.notifyProjectCreated(directory)).
+								then(() => analytics.track({ command:this, context: state, site, event: 'project created', properties: { 'projectName':name } }));
 						} else {
 							return site.notifyProjectNotCreated(directory);
 						}
