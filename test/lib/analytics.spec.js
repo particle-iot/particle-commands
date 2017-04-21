@@ -40,5 +40,15 @@ describe('analytics', () => {
 				.to.throw('context.user.id not provided');
 		});
 
+		it('returns silently when track:false is defined', () => {
+			return expect(track({ command, context:{ user: {track: false} }, site, event:'this should not appear', traits:{ foo:'bar' } }))
+				.to.eventually.resolve;
+		});
+
+		it('raises an error when track:true is defined', () => {
+			return expect(() => track({ command, context:{ user: {track: true} }, site, event:'this should not appear', traits:{ foo:'bar' } }))
+				.to.throw('context.user.id not provided');
+		});
+
 	});
 });

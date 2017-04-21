@@ -33,7 +33,8 @@ function checkApiKey(context) {
 
 function checkUserId(context) {
 	const userId = context && context.user && context.user.id;
-	if (!userId) {
+	const track = context && context.user && context.user.track;
+	if (!userId && track!==false) {
 		throw new Error('context.user.id not provided');    // todo - distinguish programming/caller errors from runtime errors?
 	}
 	return userId;
@@ -61,6 +62,9 @@ function makeAnalytics(context) {
  */
 function track({ command, context, site, event, properties }) {
 	const userId = checkUserId(context);
+	if (!userId)
+		return Promise.resolve();
+
 	const analytics = makeAnalytics(context);
 	const allProperties = buildProperties(context, properties);
 
