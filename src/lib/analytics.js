@@ -13,7 +13,7 @@ const analyticsCache = {};
 function analyticsFor(key) {
 	let analytics = analyticsCache[key];
 	if (!analytics) {
-		analytics = new Analytics(key, { flushAt: 1 });
+		analytics = new Analytics(key, { flushAfter: 10 });
 		analyticsCache[key] = analytics;
 	}
 	return analytics;
@@ -62,9 +62,9 @@ function makeAnalytics(context) {
  */
 function track({ command, context, site, event, properties }) {
 	const userId = checkUserId(context);
-	if (!userId)
+	if (!userId) {
 		return Promise.resolve();
-
+	}
 	const analytics = makeAnalytics(context);
 	const allProperties = buildProperties(context, properties);
 

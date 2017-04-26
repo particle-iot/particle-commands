@@ -43,7 +43,7 @@
     "fs-extra": "^0.30.0",
     "istanbul": "^0.3.22",
     "mocha": "^3.0.2",
-    "mock-fs": "^3.11.0",
+    "mock-fs": "^3.12.1",
     "proxyquire": "^1.6.0",
     "rimraf-promise": "^2.0.0",
     "sinon": "^1.15.4",

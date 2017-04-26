@@ -1,5 +1,6 @@
 import { Command, CommandSite } from './command';
 import { FileSystemLibraryRepository, FileSystemNamingStrategy } from 'particle-library-manager';
+import * as analytics from '../lib/analytics';
 
 /**
  */
@@ -86,6 +87,8 @@ export class LibraryContributeCommand extends Command {
 			return repo.contribute(name, client, dryRun, events);
 		})
 		.catch(err => {
+			analytics.track({ command:this, context: state, site, event: 'library upload failed',
+				properties: { name, error: err } });
 			if (err.validate && site.validationError) {
 				site.validationError(err);
 			} else {

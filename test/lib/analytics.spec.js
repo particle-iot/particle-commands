@@ -2,7 +2,7 @@ import { expect, sinon } from '../test-setup';
 
 import { identify, track, flush } from '../../src/lib/analytics';
 
-const segment_key = 'DFhKeLxnEmFVs3ejUDFUj5UH4Vv7SvUO';
+const SegmentKey = 'DFhKeLxnEmFVs3ejUDFUj5UH4Vv7SvUO';
 
 describe('analytics', () => {
 	describe('track', () => {
@@ -20,7 +20,7 @@ describe('analytics', () => {
 			const site = {};
 			const context = {
 				tool: { name: 'particle-commands unit tests' },
-				api: { key: segment_key },
+				api: { key: SegmentKey },
 				user: { id: userId }
 			};
 			const event = 'integration-test';
@@ -41,12 +41,12 @@ describe('analytics', () => {
 		});
 
 		it('returns silently when track:false is defined', () => {
-			return expect(track({ command, context:{ user: {track: false} }, site, event:'this should not appear', traits:{ foo:'bar' } }))
+			return expect(track({ command, context:{ user: { track: false } }, site, event:'this should not appear', traits:{ foo:'bar' } }))
 				.to.eventually.resolve;
 		});
 
 		it('raises an error when track:true is defined', () => {
-			return expect(() => track({ command, context:{ user: {track: true} }, site, event:'this should not appear', traits:{ foo:'bar' } }))
+			return expect(() => track({ command, context:{ user: { track: true } }, site, event:'this should not appear', traits:{ foo:'bar' } }))
 				.to.throw('context.user.id not provided');
 		});
 
