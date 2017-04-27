@@ -1,5 +1,9 @@
 export * from './cmd/index';
-import analytics from './lib/analytics';
+import * as analytics from './lib/analytics';
+import * as utilities from './lib/utilities';
+import * as settings from './lib/settings';
 export {
-	analytics
+	analytics,
+	utilities,
+	settings
 };

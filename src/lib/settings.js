@@ -1,11 +1,21 @@
+const path = require('path');
+const  _ = require('underscore');
+const utilities = require('./utilities');
+const fs = require('fs');
 
 class Settings {
 
-	constructor() {
+	constructor({separateSettings=true, settings=[]}={}) {
+		this.settings = separateSettings ? {} : this;   // current configuration settings
 		this.profile = null;        // current profile name
 		this.profile_json = null;   // parsed contents of profile.json
-		this.settings = {};   // current configuration settings
 		this.overrides = {};  // current overrides from the profile config file
+		settings.unshift(this.settings);    // add target as first argument
+		_.extend.apply(_, settings);
+	}
+
+	get(name) {
+		return (name===undefined) ? this.settings : this.settings[name];
 	}
 
 	/**
@@ -14,7 +24,7 @@ class Settings {
 	 * @param {string} defaultValue The value to return when the environment variable is not defined
 	 */
 	envValue(varName, defaultValue) {
-		var value = process.env[varName];
+		const value = process.env[varName];
 		return (typeof value === 'undefined') ? defaultValue : value;
 	}
 
@@ -27,7 +37,7 @@ class Settings {
 	 *  one of true, TRUE, 1, false, FALSE, 0
 	 */
 	envValueBoolean(varName, defaultValue) {
-		const value = envValue(varName);
+		const value = this.envValue(varName);
 		if (value === 'true' || value === 'TRUE' || value === '1') {
 			return true;
 		} else if (value === 'false' || value === 'FALSE' || value === '0') {
@@ -100,7 +110,7 @@ class Settings {
 		} catch (ex) {
 			console.error('There was an error reading ' + filename + ': ', ex);
 		}
-		return settings;
+		return this;
 	}
 
 	/**
@@ -132,7 +142,7 @@ class Settings {
 		const proFile = path.join(particleDir, 'profile.json');      //proFile, get it?
 		if (fs.existsSync(proFile)) {
 			try {
-				var data = JSON.parse(fs.readFileSync(proFile));
+				const data = JSON.parse(fs.readFileSync(proFile));
 				this.profile = (data) ? data.name : 'particle';
 				this.profile_json = data;
 			} catch (err) {
@@ -148,8 +158,8 @@ class Settings {
 	 * Saves profile.json
 	 */
 	saveProfileData(fs=require('fs')) {
-		var particleDir = this.ensureFolder();
-		var proFile = path.join(particleDir, 'profile.json');      //proFile, get it?
+		const particleDir = this.ensureFolder();
+		const proFile = path.join(particleDir, 'profile.json');      //proFile, get it?
 		fs.writeFileSync(proFile, JSON.stringify(this.profile_json, null, 2), { mode: '600' });
 	};
 
@@ -173,23 +183,27 @@ class Settings {
 			this.overrides = {};
 		}
 
-		if (!this.settings[key]) {
+		if (this.settings[key]===undefined) {
 			// find any key that matches our key, regardless of case
-			var realKey = matchKey(key, this.settings, true);
+			const realKey = matchKey(key, this.settings, true);
 			if (realKey) {
 				//console.log("Using the setting \"" + realKey + "\" instead ");
 				key = realKey;
 			}
 		}
 
-		//store the new value (redundant)
-		this.settings[key] = value;
+		if (value===undefined) {
+			delete this.settings[key];
+			delete this.overrides[key];
+		} else {
+			//store the new value (redundant)
+			this.settings[key] = value;
 
-		//store that in overrides
-		this.overrides[key] = value;
-
+			//store that in overrides
+			this.overrides[key] = value;
+		}
 		//make sure our overrides are in sync
-		this.settings = extend(this.settings, this.overrides);
+		_.extend(this.settings, this.overrides);
 
 		try {
 			var filename = this.findOverridesFile(profile);
@@ -199,16 +213,15 @@ class Settings {
 		}
 	};
 
-	transitionSparkProfiles(fs=require('fs')) {
+	transitionSparkProfiles(fs=require('fs'), notifyTranslate) {
 		const sparkDir = path.join(this.findHomePath(), '.spark');
 		const particleDir = path.join(this.findHomePath(), '.particle');
 		if (fs.existsSync(sparkDir) && !fs.existsSync(particleDir)) {
 			fs.mkdirSync(particleDir);
 
-			console.log();
-			console.log(chalk.yellow('!!!'), 'I detected a Spark profile directory, and will now migrate your settings.');
-			console.log(chalk.yellow('!!!'), 'This will only happen once, since you previously used our Spark-CLI tools.');
-			console.log();
+			if (notifyTranslate) {
+				notifyTranslate(sparkDir, particleDir);
+			}
 
 			var files = fs.readdirSync(sparkDir);
 			files.forEach(function (filename) {
@@ -240,8 +253,85 @@ class Settings {
 			});
 		}
 	};
+
+	listConfigs(particleDir = this.ensureFolder()) {
+		const files = utilities.globList(null, [
+			path.join(particleDir, '*.config.json')
+		]);
+
+		return files.map(item => {
+			const filename = path.basename(item);
+			//strip the extension
+			const name = filename.replace('.config.json', '');
+			return name;
+		});
+	}
 }
 
+var defaultSettings = {
+	apiUrl: 'https://api.particle.io',
+	buildUrl: 'https://build.particle.io',
+	access_token: null,
+
+	notSourceExtensions: [
+		'.ds_store',
+		'.jpg',
+		'.gif',
+		'.png',
+		'.include',
+		'.ignore',
+		'.ds_store',
+		'.git',
+		'.bin'
+	],
+
+	dirIncludeFilename: 'particle.include',
+	dirExcludeFilename: 'particle.ignore',
+
+	knownApps: {
+		'deep_update_2014_06': true,
+		'cc3000': true,
+		'cc3000_1_14': true,
+		'tinker': true,
+		'voodoo': true
+	},
+	knownPlatforms: {
+		0: 'Core',
+		6: 'Photon',
+		8: 'P1',
+		10: 'Electron',
+		88: 'Duo',
+		103: 'Bluz'
+	},
+	updates: {
+		'2b04:d006': {
+			systemFirmwareOne: 'system-part1-0.6.1-photon.bin',
+			systemFirmwareTwo: 'system-part2-0.6.1-photon.bin'
+		},
+		'2b04:d008': {
+			systemFirmwareOne: 'system-part1-0.6.1-p1.bin',
+			systemFirmwareTwo: 'system-part2-0.6.1-p1.bin'
+		},
+		'2b04:d00a': {
+			// The bin files MUST be in this order to be flashed to the correct memory locations
+			systemFirmwareOne:   'system-part2-0.6.1-electron.bin',
+			systemFirmwareTwo:   'system-part3-0.6.1-electron.bin',
+			systemFirmwareThree: 'system-part1-0.6.1-electron.bin'
+		}
+	},
+};
+
+function buildSettings(separateSettings, initialSettings) {
+	const settings = new Settings({separateSettings, settings:[ defaultSettings, initialSettings]});
+	settings.transitionSparkProfiles();
+	settings.whichProfile();
+	settings.loadOverrides();
+	return settings;
+}
+
+
 export {
+	buildSettings,
+	defaultSettings,
 	Settings
 }
