@@ -1,8 +1,9 @@
 const glob = require('glob');
+const path = require('path');
 
 function globList(basepath, arr) {
-	var line, found, files = [];
-	for (var i=0;i<arr.length;i++) {
+	let line, found, files = [];
+	for (let i=0;i<arr.length;i++) {
 		line = arr[i];
 		if (basepath) {
 			line = path.join(basepath, line);
@@ -18,6 +19,6 @@ function globList(basepath, arr) {
 
 export {
 	globList
-}
+};
 
 

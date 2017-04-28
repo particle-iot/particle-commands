@@ -1,14 +1,14 @@
 const path = require('path');
-const  _ = require('underscore');
+const _ = require('underscore');
 const utilities = require('./utilities');
 const fs = require('fs');
 
 class Settings {
 
-	constructor({separateSettings=true, settings=[]}={}) {
+	constructor({ separateSettings=true, settings=[] }={}) {
 		this.settings = separateSettings ? {} : this;   // current configuration settings
 		this.profile = null;        // current profile name
-		this.profile_json = null;   // parsed contents of profile.json
+		this.profile_json = {};     // parsed contents of profile.json
 		this.overrides = {};  // current overrides from the profile config file
 		settings.unshift(this.settings);    // add target as first argument
 		_.extend.apply(_, settings);
@@ -18,10 +18,15 @@ class Settings {
 		return (name===undefined) ? this.settings : this.settings[name];
 	}
 
+	set(key, value) {
+		return this.override(null, key, value);
+	}
+
 	/**
-	 * retrieve a value from the environment
+	 * Retrieve a value from the environment
 	 * @param {string} varName  The name of the environment variable to retrieve
 	 * @param {string} defaultValue The value to return when the environment variable is not defined
+	 * @return {string} the value of the environment, or defaultValue if not defined
 	 */
 	envValue(varName, defaultValue) {
 		const value = process.env[varName];
@@ -84,13 +89,13 @@ class Settings {
 	/**
 	 * Determine the location of a given profile configuratino file
 	 * @param {string} profile      The name of the profile
-	 * @returns {*}
+	 * @returns {string} the path of the overrides file
 	 */
 	findOverridesFile(profile) {
 		profile = this.defaultProfile(profile);
 		const particleDir = this.ensureFolder();
 		return path.join(particleDir, profile + '.config.json');
-	};
+	}
 
 	defaultProfile(profile) {
 		return profile || this.profile || 'particle';
@@ -99,8 +104,8 @@ class Settings {
 	loadOverrides(profile) {
 		profile = this.defaultProfile(profile);
 
+		const filename = this.findOverridesFile(profile);
 		try {
-			const filename = this.findOverridesFile(profile);
 			if (fs.existsSync(filename)) {
 				this.overrides = JSON.parse(fs.readFileSync(filename));
 				// need to do an in-situ extend since external clients may have already obtained the settings object
@@ -123,15 +128,12 @@ class Settings {
 
 	/**
 	 * in another file in our user dir, we store a profile name that switches between setting override files
+	 * @param {string} profileName  The name of the profile to switch to
 	 */
 	switchProfile(profileName) {
-		if (!this.profile_json) {
-			this.profile_json = {};
-		}
-
 		this.profile_json.name = profileName;
 		this.saveProfileData();
-	};
+	}
 
 	/**
 	 * Reads "profile.json" and saves its content to profile_json
@@ -152,7 +154,7 @@ class Settings {
 			this.profile = 'particle';
 			this.profile_json = {};
 		}
-	};
+	}
 
 	/**
 	 * Saves profile.json
@@ -161,7 +163,7 @@ class Settings {
 		const particleDir = this.ensureFolder();
 		const proFile = path.join(particleDir, 'profile.json');      //proFile, get it?
 		fs.writeFileSync(proFile, JSON.stringify(this.profile_json, null, 2), { mode: '600' });
-	};
+	}
 
 
 	// this is here instead of utilities to prevent a require-loop
@@ -185,7 +187,7 @@ class Settings {
 
 		if (this.settings[key]===undefined) {
 			// find any key that matches our key, regardless of case
-			const realKey = matchKey(key, this.settings, true);
+			const realKey = this.matchKey(key, this.settings, true);
 			if (realKey) {
 				//console.log("Using the setting \"" + realKey + "\" instead ");
 				key = realKey;
@@ -205,13 +207,13 @@ class Settings {
 		//make sure our overrides are in sync
 		_.extend(this.settings, this.overrides);
 
+		const filename = this.findOverridesFile(profile);
 		try {
-			var filename = this.findOverridesFile(profile);
 			fs.writeFileSync(filename, JSON.stringify(this.overrides, null, 2), { mode: '600' });
 		} catch (ex) {
 			console.error('There was an error writing ' + filename + ': ', ex);
 		}
-	};
+	}
 
 	transitionSparkProfiles(fs=require('fs'), notifyTranslate) {
 		const sparkDir = path.join(this.findHomePath(), '.spark');
@@ -223,10 +225,10 @@ class Settings {
 				notifyTranslate(sparkDir, particleDir);
 			}
 
-			var files = fs.readdirSync(sparkDir);
-			files.forEach(function (filename) {
-				var data = fs.readFileSync(path.join(sparkDir, filename));
-				var jsonData;
+			const files = fs.readdirSync(sparkDir);
+			files.forEach((filename) => {
+				const data = fs.readFileSync(path.join(sparkDir, filename));
+				let jsonData;
 				try {
 					jsonData = JSON.parse(data);
 				} catch (ex) {
@@ -248,11 +250,11 @@ class Settings {
 					jsonData.apiUrl = jsonData.apiUrl.replace('.spark.io', '.particle.io');
 				}
 
-				data = JSON.stringify(jsonData, null, 2);
-				fs.writeFileSync(path.join(particleDir, filename), data, { mode: '600' });
+				const jsonString = JSON.stringify(jsonData, null, 2);
+				fs.writeFileSync(path.join(particleDir, filename), jsonString, { mode: '600' });
 			});
 		}
-	};
+	}
 
 	listConfigs(particleDir = this.ensureFolder()) {
 		const files = utilities.globList(null, [
@@ -266,9 +268,27 @@ class Settings {
 			return name;
 		});
 	}
+
+	/**
+	 * Retrieves a function that can retrieve or set a value.
+	 * @param {string} key       The key of the setting to fetch/update
+	 * @returns {function(newValue)}   A function that fetches the current value, or updates if an argument
+	 * is defined.
+	 */
+	fetchUpdate(key) {
+		function fetchUpdateKey(key, value) {
+			if (value!==undefined) {
+				this.set(key, value);
+				return value;
+			} else {
+				return this.get(key);
+			}
+		}
+		return fetchUpdateKey.bind(this, key);
+	}
 }
 
-var defaultSettings = {
+const defaultSettings = {
 	apiUrl: 'https://api.particle.io',
 	buildUrl: 'https://build.particle.io',
 	access_token: null,
@@ -318,14 +338,16 @@ var defaultSettings = {
 			systemFirmwareTwo:   'system-part3-0.6.1-electron.bin',
 			systemFirmwareThree: 'system-part1-0.6.1-electron.bin'
 		}
-	},
+	}
 };
 
-function buildSettings(separateSettings, initialSettings) {
-	const settings = new Settings({separateSettings, settings:[ defaultSettings, initialSettings]});
-	settings.transitionSparkProfiles();
-	settings.whichProfile();
-	settings.loadOverrides();
+function buildSettings(separateSettings, initialSettings, skipLoadProfile) {
+	const settings = new Settings({ separateSettings, settings:[defaultSettings, initialSettings] });
+	if (!skipLoadProfile) {
+		settings.transitionSparkProfiles();
+		settings.whichProfile();
+		settings.loadOverrides();
+	}
 	return settings;
 }
 
@@ -334,4 +356,4 @@ export {
 	buildSettings,
 	defaultSettings,
 	Settings
-}
+};
