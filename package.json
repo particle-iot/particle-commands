@@ -18,7 +18,7 @@
     "es6-promisify": "^4.1.0",
     "glob": "^7.1.1",
     "mkdirp": "^0.5.1",
-    "particle-api-js": "^6.4.1",
+    "particle-api-js": "https://github.com/spark/particle-api-js.git#feature/metrics",
     "particle-library-manager": "^0.1.11",
     "semver": "^5.1.0",
     "underscore": "^1.8.3",
