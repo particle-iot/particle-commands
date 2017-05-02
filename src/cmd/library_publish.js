@@ -1,5 +1,6 @@
 import { Command, CommandSite } from './command';
 import { convertApiError } from './api';
+import * as analytics from '../lib/analytics';
 
 /**
  */
@@ -70,6 +71,8 @@ export class LibraryPublishCommand extends Command {
 						return library;
 					})
 					.catch(err => {
+						analytics.track({ command:this, context: state, site, event: 'library publish failed',
+							properties: { name, error: err } });
 						site.error(err);
 					});
 			});
