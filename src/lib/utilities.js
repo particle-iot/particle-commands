@@ -8,7 +8,7 @@ function globList(basepath, arr) {
 		if (basepath) {
 			line = path.join(basepath, line);
 		}
-		found = glob.sync(line, { nodir: true });
+		found = glob.sync(line, { nodir: true, follow: true });
 
 		if (found && (found.length > 0)) {
 			files = files.concat(found);
