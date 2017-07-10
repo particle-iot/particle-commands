@@ -5,6 +5,7 @@ import path from 'path';
 import LibraryProperties from './library_properties';
 import { findProject } from './library';
 import { Libraries } from './projects';
+import * as analytics from '../lib/analytics';
 
 /**
  * Specification and base implementation for the site instance expected by
@@ -135,7 +136,7 @@ export class LibraryInstallCommand extends Command {
 		const [libName,libVersion] = (site.libraryName()||'').split('@');
 		const client = site.apiClient();
 		const cloudRepo = new CloudLibraryRepository({ client });
-		const context = {};
+		const context = { '$state':state, '$depth':0 };
 		const vendored = site.isVendored();
 		let properties;
 		if (!vendored && !libName) {
@@ -186,12 +187,13 @@ export class LibraryInstallCommand extends Command {
 	 * @param {ProjectProperties} project The project properties for the project being installed to.
 	 *  Only defined when vendored is true.
 	 * @param {object} context  The current operation context.
+	 * @param {Number} dependencyDepth the depth in the dependency hierarchy this library is at.
+	 *  Direct project dependencies are at depth 0.
 	 * @returns {Promise|Promise.<TResult>} A promise to install the library and dependents.
 	 * @private
 	 */
-	_installLib(site, cloudRepo, vendored, libName, libVersion, libraryTargetStrategy, project, context) {
+	_installLib(site, cloudRepo, vendored, libName, libVersion, libraryTargetStrategy, project, context, dependencyDepth) {
 		context[libName] = libVersion || 'latest';
-
 		return site.notifyCheckingLibrary(libName)
 			.then(() => {
 				return cloudRepo.fetch(libName, libVersion);
@@ -206,7 +208,11 @@ export class LibraryInstallCommand extends Command {
 						}
 					})
 					.then(() => site.notifyInstalledLibrary(lib.metadata, libDir))
-					.then(() => this._installDependents(site, cloudRepo, vendored, libraryTargetStrategy, project, context, libDir));
+					.then(() => analytics.track({ command:this, context: context['$state'], site, event: 'library installed',
+						properties: { name:libName, version: libVersion, actualName: lib.metadata.name,
+							actualVersion: lib.metadata.version, dependencyDepth, projectName: project && project.name } })
+					)
+					.then(() => this._installDependents(site, cloudRepo, vendored, libraryTargetStrategy, project, context, libDir, dependencyDepth+1));
 			});
 	}
 
@@ -219,10 +225,12 @@ export class LibraryInstallCommand extends Command {
 	 * @param {ProjectProperties} project The project being installed to.
 	 * @param {object} context      The current operation context - used to avoid infinite recursion in the event of cyclic dependencies.
 	 * @param {String} libDir       The directory containing the library whose dependences should be installed.
+	 * @param {Number} dependencyDepth How deep the dependency tree is. Project libraries are at depth 0, their dependents
+	 *  at depth 1 etc..
 	 * @returns {*|Promise|Promise.<TResult>} returns a promise to install all library dependents
 	 * @private
 	 */
-	_installDependents(site, cloudRepo, vendored, libraryTargetStrategy, project, context, libDir) {
+	_installDependents(site, cloudRepo, vendored, libraryTargetStrategy, project, context, libDir, dependencyDepth) {
 		const libraryProperties = new LibraryProperties(libDir);
 		return libraryProperties.load()
 			.then(() => {
@@ -232,7 +240,8 @@ export class LibraryInstallCommand extends Command {
 					const dependencyVersion = dependencies[dependencyName];
 					if (!context[dependencyName]) {
 						context[dependencyName] = dependencyVersion;
-						resolve.push(this._installLib(site, cloudRepo, vendored, dependencyName, dependencyVersion, libraryTargetStrategy, project, context));
+						resolve.push(this._installLib(site, cloudRepo, vendored, dependencyName, dependencyVersion,
+							libraryTargetStrategy, project, context, dependencyDepth));
 					}
 				}
 				return Promise.all(resolve);
@@ -260,7 +269,7 @@ export class LibraryInstallCommand extends Command {
 				if (vendored && layout!==extended) {
 					return site.notifyIncorrectLayout(layout, extended, libName, installTarget(libName, libVersion));
 				} else {
-					return this._installLib(site, cloudRepo, vendored, libName, libVersion, installTarget, project, context);
+					return this._installLib(site, cloudRepo, vendored, libName, libVersion, installTarget, project, context, 0);
 				}
 			});
 	}

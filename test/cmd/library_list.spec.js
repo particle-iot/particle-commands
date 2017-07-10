@@ -13,14 +13,20 @@ describe('library list', () => {
 		function expectFetchesCategory(name, scope, excludeScope, sort) {
 			const client = { libraries: sinon.stub().returns(Promise.resolve(123)) };
 			const site = {
-				settings: () => {return {};},
+				settings: () => {
+					return {};
+				},
 				sections: () => {
 					const obj = {};
 					obj[name] = {};
 					return obj;
 				},
-				target: () => {{}},
-				error: (err) => { throw err; },
+				target: () => {
+					return {};
+				},
+				error: (err) => {
+					throw err;
+				},
 				apiClient: () => client,
 				notifyFetchList: () => 0,
 				notifyFetchLists: () => 0
@@ -87,7 +93,6 @@ describe('library list', () => {
 			const list2 = Promise.resolve(456);
 			const client = { libraries: sinon.stub().returns(list1, list2) };
 			const site = { notifyFetchList: sinon.stub(), notifyFetchLists: sinon.stub() };
-			const settings = { a:'A' };
 			const config = sut.normalizeConfig({}, { mine:{}, official:{} });
 			const result = sut.fetchLists(site, client, config, target);
 			return expect(result).to.eventually.deep.equal(target);
@@ -117,7 +122,6 @@ describe('library list', () => {
 			const settings = { a:'A' };
 			const result = sut.fetchList(site, client, 'abc', settings);
 			expect(site.notifyFetchList).to.have.been.calledWithMatch(promise2, 'abc', settings, target);
-			expect(result).to.be.deep.equal(promise);
 			return expect(result).to.eventually.deep.equal(target);
 		});
 
