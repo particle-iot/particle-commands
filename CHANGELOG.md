@@ -1,9 +1,14 @@
 # Changelog
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/) 
+The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+### 0.2.12 - 2017-07-10
+### Changed
+- adds support for analytics
+
 ### 0.2.11 - 2017-03-21
+### Changed
 - bumps version of yeoman dependencies
 
 ### 0.2.10 - 2017-03-21
@@ -53,7 +58,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - findProject method to locate the library or project properties
 
 ### Changed
-- library install respects the version given 
+- library install respects the version given
 
 ## 0.2.1 - 2016-10-19
 ### Changed
@@ -87,4 +92,3 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 0.0.1 - 2016-09-21
 ### Added
 - Initial extraction of commands from [particle-cli](https://github.com/spark/particle-cli)
-
