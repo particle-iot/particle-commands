@@ -4,7 +4,7 @@
   "version": "0.2.12",
   "author": "Matthew McGowan",
   "bugs": {
-    "url": "https://github.com/spark/particle-commands/issues"
+    "url": "https://github.com/particle-iot/particle-commands/issues"
   },
   "contributors": [
     {
@@ -57,7 +57,7 @@
   "engines": {
     "node": ">=0.10.40"
   },
-  "homepage": "https://github.com/spark/particle-commands/",
+  "homepage": "https://github.com/particle-iot/particle-commands/",
   "keywords": [
     "cli",
     "core",
@@ -72,7 +72,7 @@
   "preferGlobal": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/spark/particle-commands"
+    "url": "https://github.com/particle-iot/particle-commands"
   },
   "scripts": {
     "all": "npm run lint && npm run test && npm run accept",

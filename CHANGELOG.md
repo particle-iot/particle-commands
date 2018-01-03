@@ -91,4 +91,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 0.0.1 - 2016-09-21
 ### Added
-- Initial extraction of commands from [particle-cli](https://github.com/spark/particle-cli)
+- Initial extraction of commands from [particle-cli](https://github.com/particle-iot/particle-cli)
