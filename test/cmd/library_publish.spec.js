@@ -1,6 +1,6 @@
 
 import { expect, sinon } from '../test-setup';
-import { LibraryPublishCommand } from '../../src/cmd/library_publish';
+import { LibraryPublishCommand, LibraryPublishCommandSite } from '../../src/cmd/library_publish';
 
 describe('LibraryPublishCommand', () => {
 	it('handles api errors', () => {

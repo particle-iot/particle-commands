@@ -3,7 +3,6 @@ import pipeline from 'when/pipeline';
 import { convertApiError } from './api';
 import { CommandSite } from './command';
 import { findProject } from './library';
-import * as analytics from '../lib/analytics';
 
 
 
@@ -46,17 +45,12 @@ export class LibraryAddCommand {
 			lib.version = 'latest';
 		}
 		const directory = this.site.projectDir();
-		let library;
 		return pipeline([
 			() => this.ensureProjectExists(directory),
 			() => this.loadProject(),
 			() => this.fetchLibrary(lib.name, lib.version),
-			(library_) => library = library_,
-			() => this.addLibraryToProject(library),
-			() => this.saveProject(),
-			() => analytics.track({ command:this, context: state, site, event: 'library added',
-				properties: { name: lib.name, version: lib.version, actualName: library.name, actualVersion: library.version,
-				projectName: this.properties.getField('name') } })
+			(library) => this.addLibraryToProject(library),
+			() => this.saveProject()
 		]);
 	}
 
