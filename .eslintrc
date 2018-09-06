@@ -6,7 +6,6 @@
   	"node": true
   },
   "rules": {
-  	"no-var": 2,
-    "no-console": 0
+  	"no-var": 2
   }
 }

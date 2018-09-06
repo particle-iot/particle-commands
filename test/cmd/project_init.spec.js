@@ -9,8 +9,6 @@ const mockfs = require('mock-fs');
 
 describe('project_init', () => {
 
-	let context;
-
 	function addFile(target, filename) {
 		const content = fs.readFileSync(filename, 'utf-8');
 		target[filename] = content;
@@ -21,7 +19,6 @@ describe('project_init', () => {
 		addFile(fs, ProjectInitCommand.templateFile('README.md'));
 		addFile(fs, ProjectInitCommand.templateFile('project.ino'));
 		mockfs(fs);
-		context = { user: { track: false } };
 	});
 
 	afterEach(() => {
@@ -38,7 +35,7 @@ describe('project_init', () => {
 			if (allowDirectoryCreate!==undefined) {
 				site.notifyDirectoryExists = () => allowDirectoryCreate;
 			}
-			return cmd.run(context, site).then(() => site);
+			return cmd.run({}, site).then(() => site);
 		}
 
 		function expectTemplate(targetFile, templateName, properties) {
