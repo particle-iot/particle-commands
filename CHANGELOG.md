@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+### 0.2.13 - 2018-09-06
+### Fix
+- allow single letter project names
+
 ### 0.2.12 - 2017-07-10
 ### Changed
 - adds support for analytics
