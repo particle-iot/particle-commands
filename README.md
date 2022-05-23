@@ -1,5 +1,7 @@
-# Particle Commands [![Build Status](https://travis-ci.org/spark/particle-commands.svg?branch=master)](https://travis-ci.org/spark/particle-commands)
+# Particle Commands 
 UX-neutral commands for developer tools
+
+[![Build Status](https://circleci.com/gh/particle-iot/particle-commands.svg?style=shield&circle-token=e41d6332462903a16e5e172ae045909281c60736)](https://app.circleci.com/pipelines/github/particle-iot/particle-commands)
 
 # Release
 
