@@ -4,7 +4,7 @@
   "version": "0.3.0",
   "author": "Matthew McGowan",
   "bugs": {
-    "url": "https://github.com/spark/particle-commands/issues"
+    "url": "https://github.com/particle-iot/particle-commands/issues"
   },
   "contributors": [
     {
@@ -53,7 +53,7 @@
     "testdouble-chai": "^0.2.2",
     "tmp": "0.0.28"
   },
-  "homepage": "https://github.com/spark/particle-commands/",
+  "homepage": "https://github.com/particle-iot/particle-commands/",
   "keywords": [
     "cli",
     "core",
@@ -68,7 +68,7 @@
   "preferGlobal": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/spark/particle-commands"
+    "url": "https://github.com/particle-iot/particle-commands"
   },
   "scripts": {
     "prepublish": "npm run compile",
@@ -79,7 +79,7 @@
     "doctoc": "doctoc --title '## Table of Contents' README.md",
     "list-folders": "node --require babel-register bin/list_folders.js",
     "test": "npm run lint && npm run test:unit",
-    "test:ci": "npm run test:unit -- --forbid-only && npm run coverage",
+    "test:ci": "npm run lint && npm run test:unit -- --forbid-only && npm run coverage",
     "test:unit": "mocha test test/cmd test/integration --compilers js:babel-register",
     "test:unit:silent": "npm run test:unit > tmp/test-unit-log.txt 2>&1",
     "lint": "eslint -f unix src/**/*.js",
