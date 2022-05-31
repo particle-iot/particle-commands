@@ -1,4 +1,5 @@
 # Logs
+tmp
 logs
 *.log
 npm-debug.log*
@@ -36,4 +37,3 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 dist
-package-lock.json
