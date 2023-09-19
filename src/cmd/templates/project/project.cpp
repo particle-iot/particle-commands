@@ -28,11 +28,11 @@ void setup() {
 void loop() {
   // The core of your code will likely live here.
 
-  // Example: Publish text to cloud: Uncomment below to run the following code every 10 seconds
+  // Example: Publish event to cloud every 10 seconds
   /*
   static system_tick_t start = millis();
   if (millis() - start > 10000) {
-    Log.info("Publishing text to cloud...");
+    Log.info("Publishing event to cloud...");
 		Particle.publish("Hello world!");
 	  start = millis();
   }
