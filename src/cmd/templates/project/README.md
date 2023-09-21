@@ -4,13 +4,14 @@ _Write a brief description of your project here._
 
 # Getting Started
 
-Set up your development environment by following the links provided below.
-
-Start writing your user firmware from the default project template. Customize it as needed for your project.
+1. [Setup](link) your Particle device
+2. Make sure you have all the necessary [development tools](link)  installed and configured
+3. Write your [Particle firmware](https://docs.particle.io/firmware/best-practices/firmware-introduction/) within the [project's directory structure](link)
+4. [Compile](link) and [flash](link) your device with the new firmware
 
 # Learn More
 
-- Explore all the project template features [here](link).
-- Learn more about development [here](link).
-- Get details on how to set up your device [here](link).
-- Find out more about Particle firmware [here](link).
+- [Project template features](link)
+- [Particle firmware best practices](https://docs.particle.io/firmware/best-practices/firmware-introduction/)
+- [Debugging firmware builds](https://docs.particle.io/troubleshooting/guides/build-tools-troubleshooting/debugging-firmware-builds/)
+- [Continuous Integration for Particle](https://docs.particle.io/firmware/best-practices/github-actions/)
