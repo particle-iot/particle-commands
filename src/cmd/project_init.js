@@ -208,15 +208,15 @@ export class ProjectInitCommand extends Command {
 
 	createProject(site, fs, directory, name) {
 		const properties = { name };
-		const projectFile = path.join(directory, 'project.properties');
 		const project = new ProjectProperties(directory, { fs:ProjectProperties.buildFs(fs) });
 		return this.createNotifyDirectory(site, fs, directory)
+			.then(() => this.createNotifyFile(site, fs, path.join(directory, '.gitignore'), '.vscode'))
+			.then(() => this.createNotifyFileIfNeeded(site, fs, path.join(directory, 'project.properties'), ''))
 			.then(() => this.createNotifyDirectory(site, fs, path.join(directory, 'src')))
 			.then(() => this.createNotifyDirectory(site, fs, path.join(directory, '.github', 'workflows')))
-			.then(() => this.createNotifyFileIfNeeded(site, fs, projectFile, ''))
-			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, '.github', 'workflows', 'main.yaml'), 'main.yaml', properties))
+			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, '.github', 'workflows', 'main.yaml'), '.github/workflows/main.yaml', properties))
 			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, 'README.md'), 'README.md', properties))
-			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, 'src', name+'.cpp'), 'project.cpp', properties))
+			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, 'src', name + '.cpp'), 'src/project.cpp', properties))
 			.then(() => project.load())
 			.then(() => {
 				if (project.setField('name', name)) {

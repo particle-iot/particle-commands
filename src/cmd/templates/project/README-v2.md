@@ -4,13 +4,14 @@ _Write a brief description of your project here._
 
 # Getting Started
 
-1. [Setup](https://setup.particle.io/) your Particle device
-2. Make sure you have all the necessary [development tools](https://docs.particle.io/getting-started/developer-tools/workbench/) installed and configured
-3. Write your [Particle firmware](https://docs.particle.io/reference/device-os/api/introduction/getting-started/) within the [project's directory structure](link)
-4. [Compile and flash](https://docs.particle.io/getting-started/developer-tools/workbench/#local-build-and-flash) your device with the new firmware
-5. Use [Particle GitHub Actions](https://docs.particle.io/firmware/best-practices/github-actions/) to automatically compile, flash, or upload firmware, streamlining your CI/CD pipelines
+1. [Setup](link) your Particle device
+2. Make sure you have all the necessary [development tools](link)  installed and configured
+3. Write your [Particle firmware](https://docs.particle.io/firmware/best-practices/firmware-introduction/) within the [project's directory structure](link)
+4. [Compile](link) and [flash](link) your device with the new firmware
 
 # Learn More
 
-- Explore the [Particle project template](link) for detailed information about system modes, logging options, threading behavior, and [firmware best practices](https://docs.particle.io/firmware/best-practices/firmware-introduction/)
-- For firmware testing and debugging, refer to the [documentation here](https://docs.particle.io/troubleshooting/guides/build-tools-troubleshooting/debugging-firmware-builds/)
+- [Project template features](link)
+- [Particle firmware best practices](https://docs.particle.io/firmware/best-practices/firmware-introduction/)
+- [Debugging firmware builds](https://docs.particle.io/troubleshooting/guides/build-tools-troubleshooting/debugging-firmware-builds/)
+- [Continuous Integration for Particle](https://docs.particle.io/firmware/best-practices/github-actions/)
