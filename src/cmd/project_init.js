@@ -213,6 +213,7 @@ export class ProjectInitCommand extends Command {
 			.then(() => this.createNotifyFile(site, fs, path.join(directory, '.gitignore'), '.vscode'))
 			.then(() => this.createNotifyFileIfNeeded(site, fs, path.join(directory, 'project.properties'), ''))
 			.then(() => this.createNotifyDirectory(site, fs, path.join(directory, 'src')))
+			.then(() => this.createNotifyDirectory(site, fs, path.join(directory, 'lib')))
 			.then(() => this.createNotifyDirectory(site, fs, path.join(directory, '.github', 'workflows')))
 			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, '.github', 'workflows', 'main.yaml'), '.github/workflows/main.yaml', properties))
 			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, 'README.md'), 'README.md', properties))
