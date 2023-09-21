@@ -214,7 +214,7 @@ export class ProjectInitCommand extends Command {
 			.then(() => this.createNotifyDirectory(site, fs, path.join(directory, 'src')))
 			.then(() => this.createNotifyDirectory(site, fs, path.join(directory, '.github', 'workflows')))
 			.then(() => this.createNotifyFileIfNeeded(site, fs, projectFile, ''))
-			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, '.github', 'workflows'), 'main.yaml', properties))
+			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, '.github', 'workflows', 'main.yaml'), 'main.yaml', properties))
 			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, 'README.md'), 'README.md', properties))
 			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, 'src', name+'.cpp'), 'project.cpp', properties))
 			.then(() => project.load())
@@ -222,7 +222,8 @@ export class ProjectInitCommand extends Command {
 				if (project.setField('name', name)) {
 					return project.save();
 				}
-			});
+			})
+			.then(() => project.writeAssetOtaDir());
 	}
 
 	/**
