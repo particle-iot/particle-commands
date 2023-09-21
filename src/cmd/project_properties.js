@@ -74,7 +74,7 @@ export default class ProjectProperties {
 
 	writeAssetOtaDir() {
 		// Add a commented line for assetOtaDir
-		var data = "#assetOtaDir=assets\n";
+		const data = '#assetOtaDir=assets\n';
 		return this.fs.appendFile(this.name(), data, 'utf8');
 	}
 
