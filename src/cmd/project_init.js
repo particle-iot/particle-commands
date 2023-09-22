@@ -206,54 +206,11 @@ export class ProjectInitCommand extends Command {
 		});
 	}
 
-	getGitIgnoreContent() {
-		const content = [
-			'# Key files\n',
-			'*.der\n',
-			'*.pem\n',
-			'\n',
-			'# Ignore build results and bundles\n',
-			'*.bin\n',
-			'*.zip\n',
-			'[Dd]ebug/\n',
-			'[Dd]ebugPublic/\n',
-			'[Rr]elease/\n',
-			'[Rr]eleases/\n',
-			'[Bb]in/\n',
-			'[Oo]bj/\n',
-			'[Ll]og/\n',
-			'[Ll]ogs/\n',
-			'target/*\n',
-			'\n',
-			'# Platform-specific settings\n',
-			'.DS_Store\n',
-			'*.crc_block\n',
-			'*.no_crc\n',
-			'\n',
-			'# VisualStudioCode\n',
-			'.vscode/*\n',
-			'!.vscode/settings.json\n',
-			'!.vscode/tasks.json\n',
-			'!.vscode/launch.json\n',
-			'!.vscode/extensions.json\n',
-			'*.code-workspace\n',
-			'\n',
-			'# Ignore all local history of files\n',
-			'**/.history\n',
-			'\n',
-			'# Windows\n',
-			'Thumbs.db\n',
-			'*.stackdump\n',
-			'[Dd]esktop.ini\n'
-		];
-		return content.join('');
-	}
-
 	createProject(site, fs, directory, name) {
 		const properties = { name };
 		const project = new ProjectProperties(directory, { fs:ProjectProperties.buildFs(fs) });
 		return this.createNotifyDirectory(site, fs, directory)
-			.then(() => this.createNotifyFile(site, fs, path.join(directory, '.gitignore'), this.getGitIgnoreContent()))
+			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, '.gitignore'), '.gitignore', properties))
 			.then(() => this.createNotifyFileIfNeeded(site, fs, path.join(directory, 'project.properties'), ''))
 			.then(() => this.createNotifyDirectory(site, fs, path.join(directory, 'src')))
 			.then(() => this.createNotifyDirectory(site, fs, path.join(directory, 'lib')))
