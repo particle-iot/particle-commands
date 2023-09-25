@@ -3,6 +3,9 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+### 0.4.1-rc.0 - 2023-09-26
+- [tests] add project directory
+
 ### 0.4.0 - 2022-05-31
 - Move to `node@16` and `npm@8` for local development
 
