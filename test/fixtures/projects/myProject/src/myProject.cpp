@@ -31,5 +31,5 @@ void loop() {
   // Example: Publish event to cloud every 10 seconds. Uncomment the next 2 lines to try it!
   // Logging.info("Sending Hello World to the cloud!");
   // Particle.publish("Hello world!");
-	// delay( 10 * 1000 ); // milliseconds and blocking - see docs for more info! 
+  // delay( 10 * 1000 ); // milliseconds and blocking - see docs for more info! 
 }
