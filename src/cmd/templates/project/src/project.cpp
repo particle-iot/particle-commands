@@ -31,7 +31,7 @@ void loop() {
   // Example: Publish event to cloud every 10 seconds
   /*
   static system_tick_t start = millis();
-  if (millis() - start > 10000) {
+  if (Particle.connected() && millis() - start > 10000) {
     Log.info("Publishing event to cloud...");
 		Particle.publish("Hello world!");
 	  start = millis();
