@@ -14,10 +14,6 @@ describe('project_init', () => {
 		target[filename] = content;
 	}
 
-	function addDir(target, dirname) {
-		target[dirname] = {};
-	}
-
 	beforeEach(() => {
 		const fs = {};
 		addFile(fs, ProjectInitCommand.templateFile('.gitignore'));
