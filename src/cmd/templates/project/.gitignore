@@ -35,3 +35,21 @@ target/*
 Thumbs.db
 *.stackdump
 [Dd]esktop.ini
+
+# C Prerequisites
+*.d
+
+# C Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# C Linker output
+*.map
+
+# C Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
