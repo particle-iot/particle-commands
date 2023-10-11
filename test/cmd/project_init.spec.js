@@ -11,12 +11,15 @@ describe('project_init', () => {
 
 	function addFile(target, filename) {
 		const content = fs.readFileSync(filename, 'utf-8');
+		if (path.basename(filename) === 'gitignorefile') {
+			filename = path.dirname(filename) + '/.gitignore';
+		}
 		target[filename] = content;
 	}
 
 	beforeEach(() => {
 		const fs = {};
-		addFile(fs, ProjectInitCommand.templateFile('.gitignore'));
+		addFile(fs, ProjectInitCommand.templateFile('gitignorefile'));
 		addFile(fs, ProjectInitCommand.templateFile('README.md'));
 		addFile(fs, ProjectInitCommand.templateFile('src/project.cpp'));
 		addFile(fs, ProjectInitCommand.templateFile('.github/workflows/main.yaml'));
@@ -51,7 +54,7 @@ describe('project_init', () => {
 			expect(fs.existsSync(directory), 'expected project directory to exist').to.be.true;
 			expect(fs.existsSync(path.join(directory, 'src')), 'expected src directory to exist').to.be.true;
 			expect(fs.existsSync(path.join(directory, 'project.properties')), 'expected project.properties to exist').to.be.true;
-			expectTemplate(path.join(directory, '.gitignore'), '.gitignore', properties);
+			expectTemplate(path.join(directory, 'gitignorefile'), '.gitignore', properties);
 			expectTemplate(path.join(directory, '.github', 'workflows', 'main.yaml'), '.github/workflows/main.yaml', properties);
 			expectTemplate(path.join(directory, 'README.md'), 'README.md', properties);
 			expectTemplate(path.join(directory, 'src', properties.name+'.cpp'), 'src/project.cpp', properties);
