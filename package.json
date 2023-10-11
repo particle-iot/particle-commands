@@ -76,7 +76,7 @@
     "version": "npm run update-changelog",
     "compile": "npm run compile:src && npm run copy:dotfiles",
     "compile:src": "babel src -d dist --copy-files",
-    "copy:dotfiles": "copyfiles -u 4 src/cmd/templates/project/.github/**/* src/cmd/templates/project/.gitignore dist/cmd/templates/project/",
+    "copy:dotfiles": "copyfiles -u 4 src/cmd/templates/project/.github/**/* dist/cmd/templates/project/",
     "babel-watch": "babel src -d dist --watch --source-maps --copy-files",
     "doctoc": "doctoc --title '## Table of Contents' README.md",
     "list-folders": "node --require babel-register bin/list_folders.js",

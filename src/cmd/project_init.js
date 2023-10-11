@@ -210,7 +210,7 @@ export class ProjectInitCommand extends Command {
 		const properties = { name };
 		const project = new ProjectProperties(directory, { fs:ProjectProperties.buildFs(fs) });
 		return this.createNotifyDirectory(site, fs, directory)
-			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, '.gitignore'), '.gitignore', properties))
+			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, '.gitignore'), 'gitignorefile', properties))
 			.then(() => this.createNotifyFileIfNeeded(site, fs, path.join(directory, 'project.properties'), ''))
 			.then(() => this.createNotifyDirectory(site, fs, path.join(directory, 'src')))
 			.then(() => this.createNotifyDirectory(site, fs, path.join(directory, '.github', 'workflows')))
