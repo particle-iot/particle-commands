@@ -208,19 +208,22 @@ export class ProjectInitCommand extends Command {
 
 	createProject(site, fs, directory, name) {
 		const properties = { name };
-		const projectFile = path.join(directory, 'project.properties');
 		const project = new ProjectProperties(directory, { fs:ProjectProperties.buildFs(fs) });
 		return this.createNotifyDirectory(site, fs, directory)
+			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, '.gitignore'), '.gitignore', properties))
+			.then(() => this.createNotifyFileIfNeeded(site, fs, path.join(directory, 'project.properties'), ''))
 			.then(() => this.createNotifyDirectory(site, fs, path.join(directory, 'src')))
-			.then(() => this.createNotifyFileIfNeeded(site, fs, projectFile, ''))
+			.then(() => this.createNotifyDirectory(site, fs, path.join(directory, '.github', 'workflows')))
+			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, '.github', 'workflows', 'main.yaml'), '.github/workflows/main.yaml', properties))
 			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, 'README.md'), 'README.md', properties))
-			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, 'src', name+'.ino'), 'project.ino', properties))
+			.then(() => this.createNotifyTemplateIfNeeded(site, fs, path.join(directory, 'src', name + '.cpp'), 'src/project.cpp', properties))
 			.then(() => project.load())
 			.then(() => {
 				if (project.setField('name', name)) {
 					return project.save();
 				}
-			});
+			})
+			.then(() => project.writeAssetOtaDir());
 	}
 
 	/**

@@ -28,7 +28,7 @@ describe('LibraryPublishCommand', () => {
 			}
 		};
 
-		const execute = () => sut.run({user: {id: 'foo'}, api: {key: 'bar'}}, site);
+		const execute = () => sut.run({ user: { id: 'foo' }, api: { key: 'bar' } }, site);
 
 		const verify = () => {
 			throw new Error('expected rejection');

@@ -10,6 +10,7 @@ function buildPromisefs(fs=nodeFs) {
 	[
 		'readFile',
 		'writeFile',
+		'appendFile',
 		'stat'
 	].forEach(fn => promisefs[fn] = promisify(fs[fn]));
 	return promisefs;
@@ -69,6 +70,12 @@ export default class ProjectProperties {
 	save() {
 		const data = this.serialize();
 		return this.fs.writeFile(this.name(), data, 'utf8');
+	}
+
+	writeAssetOtaDir() {
+		// Add a commented line for assetOtaDir
+		const data = '#assetOtaDir=assets\n';
+		return this.fs.appendFile(this.name(), data, 'utf8');
 	}
 
 	serialize() {
