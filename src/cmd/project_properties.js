@@ -73,9 +73,15 @@ export default class ProjectProperties {
 	}
 
 	writeAssetOtaDir() {
-		// Add a commented line for assetOtaDir
-		const data = '#assetOtaDir=assets\n';
-		return this.fs.appendFile(this.name(), data, 'utf8');
+		// // Add a commented line for assetOtaDir if it doesn't exist
+		this.load()
+			.then(() => {
+				const val = this.getField('#assetOtaDir');
+				if (!val) {
+					this.setField('#assetOtaDir', 'assets');
+					return this.save();
+				}
+			});
 	}
 
 	serialize() {
