@@ -3,6 +3,9 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+### 0.5.3 - 2023-10-18
+- Fix template
+
 ### 0.5.2 - 2023-10-17
 - Fix asset ota key in project properties file
 
