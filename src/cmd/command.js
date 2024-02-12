@@ -1,5 +1,3 @@
-import when from 'when';
-
 /**
  * Describes the interface expected of objects passed as the command site to a command.
  */
@@ -22,11 +20,13 @@ class CommandSite {
 	end(state, cmd) {}
 
 
-	run(cmd, state = {}) {
-		return when()
-		.then(() => this.begin(state, this))
-		.then(() => cmd.run(state, this))
-		.finally(() => this.end(state, this));
+	async run(cmd, state = {}) {
+		try {
+			await this.begin(state, this);
+			await cmd.run(state, this);
+		} finally {
+			await this.end(state, this);
+		}
 	}
 }
 
