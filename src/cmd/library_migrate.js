@@ -1,9 +1,6 @@
 import { Command, CommandSite } from './command';
-
 import { FileSystemLibraryRepository, FileSystemNamingStrategy } from 'particle-library-manager';
 import path from 'path';
-import when from 'when';
-import pipeline from 'when/pipeline';
 import { buildAdapters } from './library_install';
 
 export class LibraryMigrateCommandSite extends CommandSite {
@@ -46,22 +43,19 @@ class AbstractLibraryMigrateCommand extends Command {
 	 *  - result: result of running `processLibrary()` if no errors were produced.
 	 *  - err: any error that was produced.
 	 */
-	run(state, site) {
-		const libsPromise = Promise.resolve(site.getLibraries());
-		return when.map(libsPromise, libdir => {
-			return Promise.resolve(site.notifyStart(libdir))
-			.then(() => {
-				const dir = path.resolve(libdir);
-				const repo = new FileSystemLibraryRepository(dir, FileSystemNamingStrategy.DIRECT);
-				return this.processLibrary(repo, '', state, site, libdir)
-				.then(([res, err]) => {
-					return Promise.resolve(site.notifyEnd(libdir, res, err))
-					.then(() => {
-						return { libdir, res, err };
-					});
-				});
-			});
-		});
+	async run(state, site) {
+		const libraries = await site.getLibraries();
+		const promises = libraries.map(libdir => this._executeLibrary(libdir, state, site));
+		return Promise.all(promises);
+	}
+
+	async _executeLibrary(libdir, state, site){
+		await site.notifyStart(libdir);
+		const dir = path.resolve(libdir);
+		const repo = new FileSystemLibraryRepository(dir, FileSystemNamingStrategy.DIRECT);
+		const [res, err] = await this.processLibrary(repo, '', state, site, libdir);
+		await site.notifyEnd(libdir, res, err);
+		return { libdir, res, err };
 	}
 
 	/**
@@ -89,22 +83,19 @@ export class LibraryMigrateTestCommand extends AbstractLibraryMigrateCommand {
 
 export class LibraryMigrateCommand extends AbstractLibraryMigrateCommand {
 
-	processLibrary(repo, libname, state, site, libdir) {
-		return resultError(pipeline([
-			() => repo.getLibraryLayout(libname),
-			(layout) => {
-				if (layout === 2) {
-					return false;
-				} else {
-					return repo.setLibraryLayout(libname, 2)
-						.then(() => {
-							if (site.isAdaptersRequired()) {
-								return buildAdapters(libdir, libname);
-							}
-						})
-						.then(() => true);
-				}
-			}
-		]));
+	async processLibrary(repo, libname, state, site, libdir) {
+		return resultError(this._processLibrary(repo, libname, state, site, libdir));
+	}
+
+	async _processLibrary(repo, libname, state, site, libdir) {
+		const layout = await repo.getLibraryLayout(libname);
+		if (layout === 2) {
+			return false;
+		}
+		await repo.setLibraryLayout(libname, 2);
+		if (site.isAdaptersRequired()) {
+			await buildAdapters(libdir, libname);
+		}
+		return true;
 	}
 }

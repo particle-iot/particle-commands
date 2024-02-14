@@ -1,5 +1,3 @@
-
-import pipeline from 'when/pipeline';
 import { convertApiError } from './api';
 import { CommandSite } from './command';
 import { findProject } from './library';
@@ -45,13 +43,15 @@ export class LibraryAddCommand {
 			lib.version = 'latest';
 		}
 		const directory = this.site.projectDir();
-		return pipeline([
-			() => this.ensureProjectExists(directory),
-			() => this.loadProject(),
-			() => this.fetchLibrary(lib.name, lib.version),
-			(library) => this.addLibraryToProject(library),
-			() => this.saveProject()
-		]);
+		return this._loadLibrary(directory, lib);
+	}
+
+	async _loadLibrary(directory, lib) {
+		await this.ensureProjectExists(directory);
+		await this.loadProject();
+		const library = await this.fetchLibrary(lib.name, lib.version);
+		await this.addLibraryToProject(library);
+		await this.saveProject();
 	}
 
 	ensureProjectExists(directory) {
@@ -86,11 +86,9 @@ export class LibraryAddCommand {
 		return convertApiError(err);
 	}
 
-	addLibraryToProject(library) {
-		return pipeline([
-			() => this.site.addedLibrary(library.name, library.version),
-			() => this.properties.addDependency(library.name, library.version)
-		]);
+	async addLibraryToProject(library) {
+		await this.site.addedLibrary(library.name, library.version);
+		await this.properties.addDependency(library.name, library.version);
 	}
 
 	saveProject() {
