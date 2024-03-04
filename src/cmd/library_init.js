@@ -23,6 +23,10 @@ export class LibraryInitCommandSite extends CommandSite {
 		throw new Error('not implemented');
 	}
 
+	outputStreamer() {
+		throw new Error('not implemented');
+	}
+
 }
 
 /**
@@ -39,7 +43,7 @@ export class LibraryInitCommand extends Command {
 	run(state, site) {
 		const opts = site.options();
 
-		const generator = new LibraryInitGenerator({ prompt: site.prompter() });
+		const generator = new LibraryInitGenerator({ prompt: site.prompter(), stdout: site.outputStreamer() });
 		generator.run({ options: opts });
 	}
 }
