@@ -51,7 +51,7 @@ export class LibraryAddCommand {
 		await this.loadProject();
 		const library = await this.fetchLibrary(lib.name, lib.version);
 		await this.addLibraryToProject(library);
-		await this.saveProject();
+		return this.saveProject();
 	}
 
 	ensureProjectExists(directory) {
@@ -88,7 +88,7 @@ export class LibraryAddCommand {
 
 	async addLibraryToProject(library) {
 		await this.site.addedLibrary(library.name, library.version);
-		await this.properties.addDependency(library.name, library.version);
+		return this.properties.addDependency(library.name, library.version);
 	}
 
 	saveProject() {
