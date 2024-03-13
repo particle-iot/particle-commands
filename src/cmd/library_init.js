@@ -44,7 +44,7 @@ export class LibraryInitCommand extends Command {
 		const opts = site.options();
 
 		const generator = new LibraryInitGenerator({ prompt: site.prompter(), stdout: site.outputStreamer() });
-		generator.run({ options: opts });
+		return generator.run({ options: opts });
 	}
 }
 
