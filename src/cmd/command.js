@@ -23,7 +23,7 @@ class CommandSite {
 	async run(cmd, state = {}) {
 		try {
 			await this.begin(state, this);
-			await cmd.run(state, this);
+			return await cmd.run(state, this);
 		} finally {
 			await this.end(state, this);
 		}
