@@ -4,6 +4,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### 1.0.0 - 2024-03-13
+- Fix return results for command site and library add
+
+### 1.0.0 - 2024-03-13
 - Remove yeoman and use own template engine with particle-library-manager new version
 
 ### 0.5.3 - 2023-10-18
