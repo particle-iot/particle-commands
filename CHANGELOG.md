@@ -3,6 +3,11 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+### 1.0.2 - 2025-06-03
+- Update `particle-api-js` and `particle-library-manager` to remove github.com/spark dependencies
+- Remove support of `node@12` and `node@14`
+- 
+
 ### 1.0.0 - 2024-03-13
 - Fix return results for command site and library add
 
