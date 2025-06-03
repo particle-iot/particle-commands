@@ -16,8 +16,8 @@
     "babel-runtime": "^6.9.2",
     "es6-promisify": "^4.1.0",
     "mkdirp": "^0.5.1",
-    "particle-api-js": "^6.5.0",
-    "particle-library-manager": "^1.0.0",
+    "particle-api-js": "^7.4.1",
+    "particle-library-manager": "^1.0.1",
     "semver": "^5.1.0",
     "underscore": "^1.8.3",
     "winreg": "^1.2.2"
@@ -87,7 +87,7 @@
     "update-changelog": "VERSION=`node -p -e \"require('./package.json').version\"` bash -c 'read -p \"Update CHANGELOG.md for version $VERSION and press ENTER when done.\"' && git add CHANGELOG.md"
   },
   "engines": {
-    "node": ">=12.x",
+    "node": ">=16.x",
     "npm": "8.x"
   }
 }
