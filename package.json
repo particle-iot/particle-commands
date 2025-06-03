@@ -87,7 +87,7 @@
     "update-changelog": "VERSION=`node -p -e \"require('./package.json').version\"` bash -c 'read -p \"Update CHANGELOG.md for version $VERSION and press ENTER when done.\"' && git add CHANGELOG.md"
   },
   "engines": {
-    "node": ">=12.x",
+    "node": ">=16.x",
     "npm": "8.x"
   }
 }
