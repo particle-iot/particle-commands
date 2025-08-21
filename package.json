@@ -17,7 +17,7 @@
     "es6-promisify": "^4.1.0",
     "mkdirp": "^0.5.1",
     "particle-api-js": "^7.4.1",
-    "particle-library-manager": "^1.0.1",
+    "particle-library-manager": "^1.0.2",
     "semver": "^5.1.0",
     "underscore": "^1.8.3",
     "winreg": "^1.2.2"
