@@ -68,7 +68,7 @@
     "url": "https://github.com/particle-iot/particle-commands"
   },
   "scripts": {
-    "prepublish": "npm run compile",
+    "prepare": "npm run compile",
     "preversion": "npm run lint && npm run test && npm run prepublish",
     "version": "npm run update-changelog",
     "compile": "npm run compile:src && npm run copy:dotfiles",
