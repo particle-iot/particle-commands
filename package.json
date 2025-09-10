@@ -16,8 +16,8 @@
     "babel-runtime": "^6.9.2",
     "es6-promisify": "^4.1.0",
     "mkdirp": "^0.5.1",
-    "particle-api-js": "^7.4.1",
-    "particle-library-manager": "^1.0.2",
+    "particle-api-js": "^11.1.4",
+    "particle-library-manager": "^1.0.4",
     "semver": "^5.1.0",
     "underscore": "^1.8.3",
     "winreg": "^1.2.2"
@@ -33,7 +33,7 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^5.3.0",
     "copyfiles": "^2.4.1",
-    "coveralls": "^2.11.4",
+    "coveralls-next": "^4.2.1",
     "doctoc": "^0.15.0",
     "eslint": "~2.2.0",
     "eslint-config-particle": "^1.0.1",
@@ -68,7 +68,7 @@
     "url": "https://github.com/particle-iot/particle-commands"
   },
   "scripts": {
-    "prepublish": "npm run compile",
+    "prepare": "npm run compile",
     "preversion": "npm run lint && npm run test && npm run prepublish",
     "version": "npm run update-changelog",
     "compile": "npm run compile:src && npm run copy:dotfiles",
@@ -85,6 +85,11 @@
     "lint:fix": "eslint --fix -f unix src/ test/",
     "coverage": "nyc --reporter=text --include='src/**/*.js' --temp-dir=./tmp/ --check-coverage --lines 50 npm run test:unit:silent",
     "update-changelog": "VERSION=`node -p -e \"require('./package.json').version\"` bash -c 'read -p \"Update CHANGELOG.md for version $VERSION and press ENTER when done.\"' && git add CHANGELOG.md"
+  },
+  "overrides": {
+    "coveralls-next": {
+      "form-data": "4.0.4"
+    }
   },
   "engines": {
     "node": ">=16.x",
