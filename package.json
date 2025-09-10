@@ -69,7 +69,7 @@
   },
   "scripts": {
     "prepare": "npm run compile",
-    "preversion": "npm run lint && npm run test && npm run prepublish",
+    "preversion": "npm run lint && npm run test && npm run prepare",
     "version": "npm run update-changelog",
     "compile": "npm run compile:src && npm run copy:dotfiles",
     "compile:src": "babel src -d dist --copy-files",
