@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+### 1.0.4 - 2025-09-10
+- Update particle-library-manager dependency to 1.0.4
+- Update particle-api-js to 11.1.4
+
 ### 1.0.3 - 2025-08-21
 - Update particle-library-manager to clarify license
 
