@@ -7,17 +7,17 @@ class CommandSite {
 
 	/**
 	 * @abstract
-	 * @param {object} state Conversation state
-	 * @param {object} cmd The command that was started
+	 * @param {object} _state Conversation state
+	 * @param {object} _cmd The command that was started
 	 */
-	begin(state, cmd) {}
+	begin(_state, _cmd) {}
 
 	/**
 	 * @abstract
-	 * @param {object} state Conversation state
-	 * @param {object} cmd The command that was finished
+	 * @param {object} _state Conversation state
+	 * @param {object} _cmd The command that was finished
 	 */
-	end(state, cmd) {}
+	end(_state, _cmd) {}
 
 
 	async run(cmd, state = {}) {
@@ -41,11 +41,11 @@ class Command {
 
 	/**
 	 * An async function/returns a promise for the command execution.
-	 * @param {object} state  Conversation state
-	 * @param {CommandSite} site    The command interaction site.
+	 * @param {object} _state  Conversation state
+	 * @param {CommandSite} _site    The command interaction site.
 	 * @abstract
 	 */
-	run(state, site) {}
+	run(_state, _site) {}
 }
 
 
@@ -62,8 +62,8 @@ class AbstractStatefulCommand {
 		// the run method for this command
 	}
 
-	run(state, site) {
-		if (state===this) {
+	run(state, _site) {
+		if (state === this) {
 			return this.doRun();
 		}
 

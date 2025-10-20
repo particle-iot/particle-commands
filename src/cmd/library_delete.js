@@ -21,11 +21,11 @@ export class LibraryDeleteCommandSite extends CommandSite {
 
 	/**
 	 * Notifies the site that the command is about to retrieve the libraries.
-	 * @param {Promise}promise   The command to retrieve the libraries.
-	 * @param {string}libraryIdent     the identifier of the library being deleted
+	 * @param {Promise} promise   The command to retrieve the libraries.
+	 * @param {string} _libraryIdent     the identifier of the library being deleted
 	 * @return {Promise} to list libraries
 	 */
-	notifyStart(promise, libraryIdent) {
+	notifyStart(promise, _libraryIdent) {
 		return promise;
 	}
 
@@ -65,15 +65,15 @@ export class LibraryDeleteCommand extends Command {
 			const deletePromise = apiClient.deleteLibrary({ name, force });
 
 			const promise = searchPromise
-			.then(libraries => {
-				if (libraries.length) {
-					return deletePromise;
-				}
-			})
-			.catch(err => {
-				const result = this.apiError(err);
-				throw result;
-			});
+				.then(libraries => {
+					if (libraries.length) {
+						return deletePromise;
+					}
+				})
+				.catch(err => {
+					const result = this.apiError(err);
+					throw result;
+				});
 
 			// todo - this delete command and the search command have a similar structure so try to factor out the
 			// common flow.
@@ -101,9 +101,9 @@ export class LibraryDeleteCommand extends Command {
 	 */
 	run(state, site) {
 		return Promise.resolve(site.libraryIdent())
-		.then(ident => {
-			return this.deleteLibrary(site, ident);
-		});
+			.then(ident => {
+				return this.deleteLibrary(site, ident);
+			});
 	}
 
 }

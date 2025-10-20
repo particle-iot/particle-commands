@@ -66,23 +66,23 @@ export class LibraryListCommandSite extends CommandSite {
 	/**
 	 * Notification of a promise to fetch a given library list. The result of the promise is the list of libraries.
 	 * NB: Currently unused.
-	 * @param {Promise} promise   The promise to fetch the list of libraries
-	 * @param {String} name      The configuration name
-	 * @param {Object} settings  The final settings for fetching the list
+	 * @param {Promise} _promise   The promise to fetch the list of libraries
+	 * @param {String} _name      The configuration name
+	 * @param {Object} _settings  The final settings for fetching the list
 	 * @return {Promise|undefined} either a new promise (wrapping the original promise) or
 	 * undefined to use the original unmodified.
 	 */
-	notifyFetchList(promise, name, settings) {
+	notifyFetchList(_promise, _name, _settings) {
 		return undefined;
 	}
 
 	/**
 	 * Notification that all the lists are being fetched. The result of the promise is an object, with each
 	 * list keyed by the name of the list.
-	 * @param {Promise} promise   The promise to fetch all library lists
-	 * @param {Object} settings  The settings used to fetch each list
+	 * @param {Promise} _promise   The promise to fetch all library lists
+	 * @param {Object} _settings  The settings used to fetch each list
 	 */
-	notifyFetchLists(promise, settings) {
+	notifyFetchLists(_promise, _settings) {
 
 	}
 
@@ -125,7 +125,7 @@ export class LibraryListCommand extends Command {
 	run(state, site) {
 		let client, settings, sections, config, target;
 
-		let result = Promise.resolve()
+		const result = Promise.resolve()
 			.then(() => site.apiClient())
 			.then((_client) => {
 				client = _client;
@@ -155,7 +155,7 @@ export class LibraryListCommand extends Command {
 
 	_buildFetchLists(site, client, config, target) {
 		const fetch = [];
-		for (let name in config) {
+		for (const name in config) {
 			const settings = config[name];
 			const list = this.fetchList(site, client, name, settings, target);
 			fetch.push(list);
@@ -195,8 +195,8 @@ export class LibraryListCommand extends Command {
 	}
 
 	_removeUndefined(value) {
-		for (let name in value) {
-			if (value[name]===undefined) {
+		for (const name in value) {
+			if (value[name] === undefined) {
 				delete value[name];
 			}
 		}
@@ -205,7 +205,7 @@ export class LibraryListCommand extends Command {
 
 	normalizeConfig(base, settings) {
 		const config = {};
-		for (let name in settings) {
+		for (const name in settings) {
 			config[name] = this._removeUndefined(Object.assign({}, this.categories[name], base, settings[name]));
 		}
 		return config;

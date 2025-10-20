@@ -18,11 +18,11 @@ export class LibraryAddCommandSite extends CommandSite {
 		throw new Error('not implemented');
 	}
 
-	fetchingLibrary(promise, name) {
+	fetchingLibrary(promise, _name) {
 		return promise;
 	}
 
-	addedLibrary(name, version) {
+	addedLibrary(_name, _version) {
 	}
 }
 

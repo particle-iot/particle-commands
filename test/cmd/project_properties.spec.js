@@ -66,7 +66,7 @@ describe('project properties', () => {
 	describe('properties', () => {
 		it('strips spaces from properties and values', () => {
 			sut.parse(
-			`
+				`
 			a = 1
 			b = 2
 			`);

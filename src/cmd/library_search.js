@@ -21,11 +21,11 @@ export class LibrarySearchCommandSite extends CommandSite {
 
 	/**
 	 * Notifies the site that the command is about to retrieve the libraries.
-	 * @param {Promise}promise   The command to retrieve the libraries.
-	 * @param {string}filter     Optional
+	 * @param {Promise} promise   The command to retrieve the libraries.
+	 * @param {string} _filter     Optional
 	 * @return {Promise} to list libraries
 	 */
-	notifyListLibrariesStart(promise, filter) {
+	notifyListLibrariesStart(promise, _filter) {
 		return promise;
 	}
 
@@ -85,9 +85,9 @@ export class LibrarySearchCommand extends Command {
 	 */
 	run(state, site) {
 		return Promise.resolve(site.searchString())
-		.then(filter => {
-			return this.listLibraries(site, filter);
-		});
+			.then(filter => {
+				return this.listLibraries(site, filter);
+			});
 	}
 
 }

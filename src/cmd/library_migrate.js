@@ -13,17 +13,17 @@ export class LibraryMigrateCommandSite extends CommandSite {
 
 	/**
 	 * Notify that the given library is being migrated.
-	 * @param {string} dir The directory containing the library
+	 * @param {string} _dir The directory containing the library
 	 */
-	notifyStart(dir) {}
+	notifyStart(_dir) {}
 
 	/**
 	 *
-	 * @param {string}  lib The directory containing the library that migration was attempted on.
-	 * @param {object}  result  There result of the migration.
-	 * @param {object}  err if defined, is the error that occurred migrating the library.
+	 * @param {string}  _lib The directory containing the library that migration was attempted on.
+	 * @param {object}  _result  There result of the migration.
+	 * @param {object}  _err if defined, is the error that occurred migrating the library.
 	 */
-	notifyEnd(lib, result, err) {}
+	notifyEnd(_lib, _result, _err) {}
 
 	isAdaptersRequired() {
 		return false;
@@ -60,12 +60,12 @@ class AbstractLibraryMigrateCommand extends Command {
 
 	/**
 	 * Handle migration of a single library.
-	 * @param {FileSystemLibraryRepo} repo          The filesystem repo containing the library.
-	 * @param {string} libname       The identifier of the library
-	 * @param {object} state         the current command state
-	 * @param {LibraryMigrateCommandSite} site          the command site
+	 * @param {FileSystemLibraryRepo} _repo          The filesystem repo containing the library.
+	 * @param {string} _libname       The identifier of the library
+	 * @param {object} _state         the current command state
+	 * @param {LibraryMigrateCommandSite} _site          the command site
 	 */
-	processLibrary(repo, libname, state, site) {}
+	processLibrary(_repo, _libname, _state, _site) {}
 }
 
 function resultError(promise) {
@@ -76,7 +76,7 @@ function resultError(promise) {
 
 export class LibraryMigrateTestCommand extends AbstractLibraryMigrateCommand {
 
-	processLibrary(repo, libname, state, site, libdir) {
+	processLibrary(repo, libname, _state, _site, _libdir) {
 		return resultError(repo.getLibraryLayout(libname));
 	}
 }

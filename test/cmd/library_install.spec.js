@@ -1,6 +1,6 @@
 
 import { expect, sinon } from '../test-setup';
-import { LibraryInstallCommand, LibraryInstallCommandSite } from '../../src/cmd/library_install';
+import { LibraryInstallCommand } from '../../src/cmd/library_install';
 import { legacy } from '../../src/cmd/project_properties';
 
 describe('library install', () => {
@@ -14,7 +14,7 @@ describe('library install', () => {
 			const vendored = true;
 			const libName = undefined;
 			const libVersion = undefined;
-			const installTarget = (name,version) => name+'+'+version;
+			const installTarget = (name,version) => name + '+' + version;
 			const project = { projectLayout: sinon.stub().resolves(legacy) };
 			const promise = sut.installSingleLib(site, repo, vendored, libName, libVersion, installTarget, project, context);
 			return promise.then(() => {
@@ -31,7 +31,7 @@ describe('library install', () => {
 			const vendored = false;
 			const libName = undefined;
 			const libVersion = undefined;
-			const installTarget = (name,version) => name+'+'+version;
+			const installTarget = (name,version) => name + '+' + version;
 			const project = undefined;
 			const promise = sut.installSingleLib(site, repo, vendored, libName, libVersion, installTarget, project, context);
 			return promise.then(() => {

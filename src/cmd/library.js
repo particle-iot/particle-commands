@@ -8,7 +8,7 @@ export function libraryTestResources() {
 	return path.join(resourcesDir(), 'libraries');
 }
 
-export function findProject(directory, mustExist=false) {
+export function findProject(directory, mustExist = false) {
 	const libraryProperties = new LibraryProperties(directory);
 	const projectProperties = new ProjectProperties(directory);
 
@@ -18,12 +18,12 @@ export function findProject(directory, mustExist=false) {
 				return projectProperties;
 			} else {
 				return libraryProperties.exists()
-				.then(exists => {
-					if (!exists && mustExist) {
-						throw new Error(`Project or library not found in directory ${directory}`);
-					}
-					return exists ? libraryProperties : null;
-				});
+					.then(exists => {
+						if (!exists && mustExist) {
+							throw new Error(`Project or library not found in directory ${directory}`);
+						}
+						return exists ? libraryProperties : null;
+					});
 			}
 		});
 
