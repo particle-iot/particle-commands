@@ -20,7 +20,7 @@ jobs:
           command: npm run test:ci
   publish-npm:
     docker:
-      - image: cimg/node:16.15.0 # Primary execution image
+      - image: cimg/node:22.18.0 # Primary execution image
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -48,7 +48,7 @@ workflows:
             - particle-ci-private
           matrix:
             parameters:
-              node-version: ["16.15.0"]
+              node-version: ["22.18.0"]
           # run tests for all branches and tags
           filters:
             tags:
