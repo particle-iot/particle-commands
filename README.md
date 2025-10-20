@@ -7,11 +7,11 @@ UX-neutral commands for developer tools
 
 ## Installation
 1. Install Node.js [`node@16.x` and `npm@8.x` are required]
-1. Clone this repository `$ git clone git@github.com:particle-iot/particle-commands.git && cd ./particle-commands`
-1. Install dependencies `$ npm install`
-1. View available commands `$ npm run`
-1. Run the tests `$ npm test`
-1. Start Hacking!
+2. Clone this repository `$ git clone git@github.com:particle-iot/particle-commands.git && cd ./particle-commands`
+3. Install dependencies `$ npm install`
+4. View available commands `$ npm run`
+5. Run the tests `$ npm test`
+6. Start Hacking!
 
 ## Development
 
