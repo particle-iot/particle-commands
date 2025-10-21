@@ -5,7 +5,7 @@ const legacy = 'legacy';
 const simple = 'simple';
 const extended = 'extended';
 
-function buildPromisefs(fs=nodeFs) {
+function buildPromisefs(fs = nodeFs) {
 	const promisefs = {};
 	[
 		'readFile',
@@ -18,7 +18,7 @@ function buildPromisefs(fs=nodeFs) {
 
 export default class ProjectProperties {
 
-	static buildFs(fs=nodeFs) {
+	static buildFs(fs = nodeFs) {
 		return buildPromisefs(fs);
 	}
 
@@ -57,7 +57,7 @@ export default class ProjectProperties {
 	addGroups(target, groups, value) {
 		const key = groups[0].trim();
 		if (key) {
-			if (groups.length===1) {
+			if (groups.length === 1) {
 				target[key] = value;
 			} else {
 				const next = target[key] = (target[key] || {});
@@ -87,7 +87,7 @@ export default class ProjectProperties {
 	serialize() {
 		return Object.keys(this.fields).map(field => {
 			return `${field}=${this.fields[field]}`;
-		}).join('\n')+'\n';
+		}).join('\n') + '\n';
 	}
 
 	exists() {
@@ -95,12 +95,12 @@ export default class ProjectProperties {
 		return stat.then(stats => {
 			return stats.isFile();
 		})
-		.catch(err => {
-			if (err.code!=='ENOENT') {
-				throw err;
-			}
-			return false;
-		});
+			.catch(err => {
+				if (err.code !== 'ENOENT') {
+					throw err;
+				}
+				return false;
+			});
 	}
 
 	sourceDirExists() {
@@ -145,7 +145,7 @@ export default class ProjectProperties {
 	setField(name, value) {
 		const prev = this.getField(name);
 		this.fields[name] = value;
-		return prev!==value;
+		return prev !== value;
 	}
 
 	getField(name) {

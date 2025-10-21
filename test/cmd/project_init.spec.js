@@ -34,7 +34,7 @@ describe('project_init', () => {
 			site.notifyProjectNotCreated = sinon.stub();
 			site.directory = sinon.stub().resolves(directory);
 			site.name = sinon.stub().resolves(name);
-			if (allowDirectoryCreate!==undefined) {
+			if (allowDirectoryCreate !== undefined) {
 				site.notifyDirectoryExists = () => allowDirectoryCreate;
 			}
 			return cmd.run({}, site).then(() => site);
@@ -54,12 +54,12 @@ describe('project_init', () => {
 			expectTemplate(path.join(directory, '.gitignore'), 'gitignorefile', properties);
 			expectTemplate(path.join(directory, '.github', 'workflows', 'main.yaml'), '.github/workflows/main.yaml', properties);
 			expectTemplate(path.join(directory, 'README.md'), 'README.md', properties);
-			expectTemplate(path.join(directory, 'src', properties.name+'.cpp'), 'src/project.cpp', properties);
+			expectTemplate(path.join(directory, 'src', properties.name + '.cpp'), 'src/project.cpp', properties);
 
 			const project = new ProjectProperties(directory, { fs:ProjectProperties.buildFs(fs) });
 			return project.load()
 				.then(() => {
-					for (let propName in properties) {
+					for (const propName in properties) {
 						expect(project.getField(propName)).to.equal(properties[propName]);
 					}
 					return project;
@@ -68,7 +68,7 @@ describe('project_init', () => {
 
 		function expectCreateProject({ directory, allowDirectoryCreate, name }) {
 			return createProject({ directory, allowDirectoryCreate, name })
-				.then((site) => {
+				.then((_site) => {
 					return expectProject(directory, { name });
 				});
 		}

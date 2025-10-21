@@ -4,7 +4,7 @@ import mkdirp from 'mkdirp';
 const promisify = require('es6-promisify');
 import path from 'path';
 import { validateField } from 'particle-library-manager';
-const underscore =  require('underscore');
+const underscore = require('underscore');
 
 /**
  * Specification and base implementation for the site instance expected by
@@ -44,7 +44,7 @@ export class ProjectInitCommandSite extends CommandSite {
 	 * @param {String} dir The directory that exists.
 	 * The response can be a direct value or a promise. If the promise is falsey then the process is stopped.
 	 */
-	notifyDirectoryExists(dir) {
+	notifyDirectoryExists(_dir) {
 
 	}
 
@@ -53,7 +53,7 @@ export class ProjectInitCommandSite extends CommandSite {
 	 * @param {String} path      The directory that will contain the project
 	 * @param {Promise} promise   The promise to create the project in the given directory
 	 */
-	notifyCreatingProject(path, promise) {
+	notifyCreatingProject(_path, _promise) {
 
 	}
 
@@ -68,11 +68,11 @@ export class ProjectInitCommandSite extends CommandSite {
 		return promise;
 	}
 
-	notifyProjectNotCreated(directory) {
+	notifyProjectNotCreated(_directory) {
 
 	}
 
-	notifyProjectCreated(directory) {
+	notifyProjectCreated(_directory) {
 
 	}
 
@@ -127,7 +127,7 @@ export class ProjectInitCommand extends Command {
 				name = _name;
 				const validate = this.validateName(name);
 				if (!validate.valid) {
-					throw new Error('name: '+validate.errors.name);
+					throw new Error('name: ' + validate.errors.name);
 				}
 				return Promise.resolve(site.directory());
 			})
@@ -135,22 +135,22 @@ export class ProjectInitCommand extends Command {
 				directory = _directory;
 				if (directory) {
 					return Promise.resolve(site.filesystem())
-					.then((_filesystem) => {
-						filesystem = _filesystem;
-						return this.canCreateInDirectory(site, filesystem, directory);
-					})
-					.then(create => {
-						if (create) {
-							let project = this.createProject(site, filesystem, directory, name);
-							project = site.notifyCreatingProject(directory, project) || project;
-							return project.then(() => site.notifyProjectCreated(directory));
-						} else {
-							return site.notifyProjectNotCreated(directory);
-						}
-					})
-					.catch(error => {
-						site.error(error);
-					});
+						.then((_filesystem) => {
+							filesystem = _filesystem;
+							return this.canCreateInDirectory(site, filesystem, directory);
+						})
+						.then(create => {
+							if (create) {
+								let project = this.createProject(site, filesystem, directory, name);
+								project = site.notifyCreatingProject(directory, project) || project;
+								return project.then(() => site.notifyProjectCreated(directory));
+							} else {
+								return site.notifyProjectNotCreated(directory);
+							}
+						})
+						.catch(error => {
+							site.error(error);
+						});
 				}
 			});
 	}
@@ -199,7 +199,7 @@ export class ProjectInitCommand extends Command {
 	createNotifyFileIfNeeded(site, fs, path, content) {
 		const stat = promisify(fs.stat);
 		return stat(path).catch(error => {
-			if (error.code!=='ENOENT') {
+			if (error.code !== 'ENOENT') {
 				throw error;
 			}
 			return this.createNotifyFile(site, fs, path, content);
@@ -242,7 +242,7 @@ export class ProjectInitCommand extends Command {
 				return this._checkDirectoryIsEmpty(site, fs, directory);
 			}
 		}).catch(err => {
-			if (err.code!=='ENOENT') {
+			if (err.code !== 'ENOENT') {
 				throw err;
 			}
 			// directory does not exist

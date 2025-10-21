@@ -29,27 +29,27 @@ export class LibraryContributeCommandSite extends CommandSite {
 
 	/**
 	 * Notification that the library directory is being checked. The library is validated and then loaded.
-	 * @param {Promise} promise     The promise to validate the library
-	 * @param {string} directory    The directory that contains the library to validate
+	 * @param {Promise} _promise     The promise to validate the library
+	 * @param {string} _directory    The directory that contains the library to validate
 	 */
-	validatingLibrary(promise, directory) {
+	validatingLibrary(_promise, _directory) {
 
 	}
 
 	/**
 	 * Notification that library contribution is starting
-	 * @param {Promise} promise   The promise that will contribute the library.
-	 * @param {Library} library   The loaded library
+	 * @param {Promise} _promise   The promise that will contribute the library.
+	 * @param {Library} _library   The loaded library
 	 */
-	contributingLibrary(promise, library) {
+	contributingLibrary(_promise, _library) {
 
 	}
 
 	/**
 	 * Notification that the library has been successfully contributed.
-	 * @param {Library} library the library that was contributed.
+	 * @param {Library} _library the library that was contributed.
 	 */
-	contributeComplete(library) {
+	contributeComplete(_library) {
 
 	}
 
@@ -75,23 +75,23 @@ export class LibraryContributeCommand extends Command {
 		let dryRun = false;
 		let contributeDir;
 		return Promise.resolve(site.libraryDirectory())
-		.then(dir => {
-			contributeDir = dir;
-			return site.dryRun();
-		})
-		.then(d => dryRun = d)
-		.then(() => site.apiClient())
-		.then(client => {
-			const repo = new FileSystemLibraryRepository(contributeDir, FileSystemNamingStrategy.DIRECT);
-			return repo.contribute(name, client, dryRun, events);
-		})
-		.catch(err => {
-			if (err.validate && site.validationError) {
-				site.validationError(err);
-			} else {
-				site.error(err);
-			}
-		});
+			.then(dir => {
+				contributeDir = dir;
+				return site.dryRun();
+			})
+			.then(d => dryRun = d)
+			.then(() => site.apiClient())
+			.then(client => {
+				const repo = new FileSystemLibraryRepository(contributeDir, FileSystemNamingStrategy.DIRECT);
+				return repo.contribute(name, client, dryRun, events);
+			})
+			.catch(err => {
+				if (err.validate && site.validationError) {
+					site.validationError(err);
+				} else {
+					site.error(err);
+				}
+			});
 	}
 
 }

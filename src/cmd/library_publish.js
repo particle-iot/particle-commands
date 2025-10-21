@@ -26,18 +26,18 @@ export class LibraryPublishCommandSite extends CommandSite {
 
 	/**
 	 * Notification that library publishing is starting
-	 * @param {Promise} promise   The promise that will publish the library.
-	 * @param {string} ident      The library identifier
+	 * @param {Promise} _promise   The promise that will publish the library.
+	 * @param {string} _ident      The library identifier
 	 */
-	publishingLibrary(promise, ident) {
+	publishingLibrary(_promise, _ident) {
 
 	}
 
 	/**
 	 * Notification that the library publishing has completed.
-	 * @param {Library} library the library that was published.
+	 * @param {Library} _library the library that was published.
 	 */
-	publishLibraryComplete(library) {
+	publishLibraryComplete(_library) {
 
 	}
 }

@@ -47,19 +47,19 @@ export class LibraryInstallCommandSite extends CommandSite {
 		throw err;
 	}
 
-	notifyIncorrectLayout(actualLayout, expectedLayout, libName, targetDir) {
+	notifyIncorrectLayout(_actualLayout, _expectedLayout, _libName, _targetDir) {
 		return Promise.resolve();
 	}
 
-	notifyCheckingLibrary(libName) {
+	notifyCheckingLibrary(_libName) {
 		return Promise.resolve();
 	}
 
-	notifyFetchingLibrary(lib, targetDir) {
+	notifyFetchingLibrary(_lib, _targetDir) {
 		return Promise.resolve();
 	}
 
-	notifyInstalledLibrary(lib, targetDir) {
+	notifyInstalledLibrary(_lib, _targetDir) {
 		return Promise.resolve();
 	}
 
@@ -87,7 +87,7 @@ export function buildAdapters(libDir, libName) {
  * @returns {function} A function that provides the target library directory
  */
 function vendoredInstallStrategy(project) {
-	return (name, version) => {
+	return (name, _version) => {
 		return project.libraryDirectory(true, name);
 	};
 }
@@ -105,7 +105,7 @@ function nameVersionInstallStrategy(baseDir) {
 		}
 		// todo - should probably instead instantiate the appropriate library repository
 		// so we get reuse and consistency
-		return path.join(baseDir, name+'@'+version);
+		return path.join(baseDir, name + '@' + version);
 	};
 }
 
@@ -115,11 +115,11 @@ function nameVersionInstallStrategy(baseDir) {
 export class LibraryInstallCommand extends Command {
 
 	/**
-	 * @param {LibraryInstallCommandSite} site for the `findHomePath`
+	 * @param {LibraryInstallCommandSite} _site for the `findHomePath`
 	 * @returns {Object|string|*|Promise} The location to store libraries centrally on this machine
 	 * @private
 	 */
-	_centralLibrariesDirectory(site) {
+	_centralLibrariesDirectory(_site) {
 		return new Libraries().communityLibrariesFolder();
 	}
 
@@ -132,7 +132,7 @@ export class LibraryInstallCommand extends Command {
 		// the directory containing the target project
 		const targetDir = site.targetDirectory();
 
-		const [libName,libVersion] = (site.libraryName()||'').split('@');
+		const [libName,libVersion] = (site.libraryName() || '').split('@');
 		const client = site.apiClient();
 		const cloudRepo = new CloudLibraryRepository({ client });
 		const context = {};
@@ -166,7 +166,7 @@ export class LibraryInstallCommand extends Command {
 			.then(() => {
 				const deps = project.groups.dependencies || {};
 				const install = [];
-				for (let d in deps) {
+				for (const d in deps) {
 					const libName = d;
 					const libVersion = deps[d];
 					install.push(this.installSingleLib(site, cloudRepo, vendored, libName, libVersion, installStrategy, project, context));
@@ -228,7 +228,7 @@ export class LibraryInstallCommand extends Command {
 			.then(() => {
 				const resolve = [];
 				const dependencies = libraryProperties.dependencies();
-				for (let dependencyName in dependencies) {
+				for (const dependencyName in dependencies) {
 					const dependencyVersion = dependencies[dependencyName];
 					if (!context[dependencyName]) {
 						context[dependencyName] = dependencyVersion;
@@ -257,7 +257,7 @@ export class LibraryInstallCommand extends Command {
 
 		return fetchLayout
 			.then((layout) => {
-				if (vendored && layout!==extended) {
+				if (vendored && layout !== extended) {
 					return site.notifyIncorrectLayout(layout, extended, libName, installTarget(libName, libVersion));
 				} else {
 					return this._installLib(site, cloudRepo, vendored, libName, libVersion, installTarget, project, context);

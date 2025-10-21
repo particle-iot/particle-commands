@@ -9,7 +9,7 @@ const projects = 'projects';
 const community = 'community';
 
 class SystemFolders {
-	constructor(fs=require('fs')) {
+	constructor(fs = require('fs')) {
 		this.fsMkdir = promisify(fs.mkdir);
 		this.fsStat = promisify(fs.stat);
 	}
@@ -20,7 +20,7 @@ class SystemFolders {
 				return true;
 			})
 			.catch(error => {
-				if (error.code==='EEXIST') {
+				if (error.code === 'EEXIST') {
 					return false;
 				}
 				throw error;
@@ -38,10 +38,10 @@ class SystemFolders {
 				return false;
 			})
 			.catch(error => {
-				if (error.code==='ENOENT') {
+				if (error.code === 'ENOENT') {
 					const parent = path.dirname(name);
 					let promise;
-					if (parent && parent!=='/' && parent!=='.') {
+					if (parent && parent !== '/' && parent !== '.') {
 						promise = this.mkdirp(parent);
 					}
 					// even simply creating the promise causes them to be executed out of order
@@ -61,7 +61,7 @@ class SystemFolders {
 			'USERPROFILE'
 		];
 
-		for (let i=0;i<envVars.length;i++) {
+		for (let i = 0;i < envVars.length;i++) {
 			const dir = process.env[envVars[i]];
 			if (dir && fs.existsSync(dir)) {
 				return dir;
@@ -75,7 +75,7 @@ class SystemFolders {
 	}
 
 	windowsDocumentsFolder() {
-		return new Promise((fulfill, reject) => {
+		return new Promise((fulfill, _rej) => {
 			const winreg = require('winreg');
 			const regKey = winreg({
 				hive: winreg.HKCU,                                        // open registry hive HKEY_CURRENT_USER
@@ -86,9 +86,9 @@ class SystemFolders {
 			// list "Documents" folder path
 			regKey.values((err, items) => {
 				if (err) {
-//					console.log('ERROR: '+err);
+					//					console.log('ERROR: '+err);
 				} else {
-					for (let i=0; i<items.length && !documents; i++) {
+					for (let i = 0; i < items.length && !documents; i++) {
 						if (items[i].name.toLowerCase() === 'personal') {
 							documents = items[i].value;
 							return fulfill(documents);
@@ -100,7 +100,7 @@ class SystemFolders {
 	}
 
 	documentsFolder() {
-		if (process.platform==='win32') {
+		if (process.platform === 'win32') {
 			return this.windowsDocumentsFolder()
 				.then(documents => {
 					return documents || this.userHomeFolder();
