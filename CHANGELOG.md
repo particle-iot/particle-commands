@@ -3,6 +3,11 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+### 1.0.5 - 2025-10-21
+- Bump to exclusive >= node 22
+- Migrate to latest particle eslint config
+- Update engines
+
 ### 1.0.4 - 2025-09-10
 - Update particle-library-manager dependency to 1.0.4
 - Update particle-api-js to 11.1.4
