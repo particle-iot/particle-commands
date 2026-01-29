@@ -119,4 +119,4 @@ For support or feedback on this template or any Particle products, please join o
 
 ## Version
 
-Template version 1.0.2
+Template version 1.0.3

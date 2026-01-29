@@ -176,9 +176,9 @@ export class ProjectInitCommand extends Command {
 			});
 	}
 
-	createNotifyTemplateIfNeeded(site, fs, targetFile, templateName, data) {
+	async createNotifyTemplateIfNeeded(site, fs, targetFile, templateName, data) {
 		// assumes the parent directory of the template exists
-		const content = this.expandTemplate(fs, templateName, data);
+		const content = await this.expandTemplate(fs, templateName, data);
 		return this.createNotifyFileIfNeeded(site, fs, targetFile, content);
 	}
 
