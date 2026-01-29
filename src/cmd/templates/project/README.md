@@ -111,7 +111,7 @@ To bundle environment variables with your firmware, create an `env.json` file in
 env=env.json
 ```
 
-See the [Asset OTA documentation](https://docs.particle.io/reference/device-os/api/environment) for more details.
+See the [Environment documentation](https://docs.particle.io/reference/device-os/api/environment) for more details.
 
 ## Support and Feedback
 
