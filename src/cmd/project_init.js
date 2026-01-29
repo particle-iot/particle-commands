@@ -223,7 +223,7 @@ export class ProjectInitCommand extends Command {
 					return project.save();
 				}
 			})
-			.then(() => project.writeAssetOtaDir());
+			.then(() => project.populateProjectProperties());
 	}
 
 	/**

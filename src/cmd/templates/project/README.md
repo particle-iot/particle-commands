@@ -15,6 +15,8 @@ Feel free to replace this README.md file with your own content, or keep it for r
   - [Testing and Debugging](#testing-and-debugging)
   - [GitHub Actions (CI/CD)](#github-actions-cicd)
   - [OTA](#ota)
+  - [Assets](#assets)
+  - [Environment](#environment)
 - [Support and Feedback](#support-and-feedback)
 - [Version](#version)
 
@@ -90,6 +92,26 @@ To learn how to utilize Particle's OTA service for device updates, consult [this
 Test OTA with the 'Particle: Cloud Flash' command in Visual Studio Code or the CLI command 'particle flash'!
 
 This firmware supports binary assets in OTA packages, allowing the inclusion of audio, images, configurations, and external microcontroller firmware. More details are [here](https://docs.particle.io/reference/device-os/api/asset-ota/asset-ota/).
+
+### Assets
+
+To include assets in your OTA bundle, create an `assets` folder in your project root and place your files there. These can include audio files, images, configuration files, or firmware for external microcontrollers.
+
+To enable asset OTA, uncomment the following line in `project.properties`:
+```
+assetOtaDir=assets
+```
+
+See the [Asset OTA documentation](https://docs.particle.io/reference/device-os/api/asset-ota) for more details.
+
+### Environment
+
+To bundle environment variables with your firmware, create an `env.json` file in your project root. Uncomment the following line in `project.properties` to enable it:
+```
+env=env.json
+```
+
+See the [Asset OTA documentation](https://docs.particle.io/reference/device-os/api/environment) for more details.
 
 ## Support and Feedback
 
