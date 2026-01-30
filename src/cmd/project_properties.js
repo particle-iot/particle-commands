@@ -72,13 +72,19 @@ export default class ProjectProperties {
 		return this.fs.writeFile(this.name(), data, 'utf8');
 	}
 
-	writeAssetOtaDir() {
-		// // Add a commented line for assetOtaDir if it doesn't exist
-		this.load()
+	populateProjectProperties() {
+		// Add a commented line for assetOtaDir and env if they don't exist
+		return this.load()
 			.then(() => {
 				const val = this.getField('#assetOtaDir');
 				if (!val) {
 					this.setField('#assetOtaDir', 'assets');
+					return this.save();
+				}
+			}).then(() => {
+				const val = this.getField('#env');
+				if (!val) {
+					this.setField('#env', 'env.json');
 					return this.save();
 				}
 			});

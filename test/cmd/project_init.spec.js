@@ -118,6 +118,15 @@ describe('project_init', () => {
 				});
 		});
 
+		it('populates commented assetOtaDir and env fields in project.properties', () => {
+			return createProject({ directory:'dir6', name:'name6' })
+				.then(() => expectProject('dir6', { name:'name6' }))
+				.then((project) => {
+					expect(project.getField('#assetOtaDir')).to.equal('assets');
+					expect(project.getField('#env')).to.equal('env.json');
+				});
+		});
+
 		// todo - preserve comments and field order
 	});
 });
