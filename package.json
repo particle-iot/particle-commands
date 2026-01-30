@@ -1,7 +1,7 @@
 {
   "name": "particle-commands",
   "description": "Library of UX-neutral commands that provide key functionality for developer tools",
-  "version": "1.0.5",
+  "version": "1.0.6-rc.1",
   "author": "Matthew McGowan",
   "contributors": [
     {
