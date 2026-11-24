@@ -3,6 +3,9 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+### 1.0.7 - 2026-11-24
+- Update Github Actions for gihub project template.
+
 ### 1.0.6 - 2026-01-30
 - Include env in project.properties for new project
 
